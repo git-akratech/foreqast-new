@@ -52,3 +52,30 @@ def foreqast_privacy_policy():
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the privacy policy page ...'
+
+# handle foreqast product load render page
+@app.route('/foreqast_load', methods = ['GET']) 
+def foreqast_load():
+	try:
+		return render_template('/landing/lord.html')
+	except Exception as e:
+		print(str(e))
+		return 'OOPS !!!, failed to load the product - load page ...'
+
+# handle foreqast power market render page
+@app.route('/foreqast_power_market', methods = ['GET']) 
+def foreqast_power_market():
+	try:
+		return render_template('/landing/power-market.html')
+	except Exception as e:
+		print(str(e))
+		return 'OOPS !!!, failed to load the product - power page ...'
+
+# handle foreqast product power render page
+@app.route('/foreqast_price', methods = ['GET']) 
+def foreqast_price():
+	try:
+		return render_template('/landing/priceforecast.html')
+	except Exception as e:
+		print(str(e))
+		return 'OOPS !!!, failed to load the product - price page ...'

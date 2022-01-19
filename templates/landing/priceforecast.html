@@ -22,14 +22,14 @@
     
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap&subset=latin-ext" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/fontawesome-all.css" rel="stylesheet">
-    <link href="css/swiper.css" rel="stylesheet">
-	<link href="css/magnific-popup.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+    <link href="static/landing/css/bootstrap.css" rel="stylesheet">
+    <link href="static/landing/css/fontawesome-all.css" rel="stylesheet">
+    <link href="static/landing/css/swiper.css" rel="stylesheet">
+	<link href="static/landing/css/magnific-popup.css" rel="stylesheet">
+    <link href="static/landing/css/styles.css" rel="stylesheet">
 	
 	<!-- Favicon  -->
-    <link rel="icon" href="images/favicon.png">
+    <link rel="icon" href="static/landing/images/favicon.png">
 </head>
 <body data-spy="scroll" data-target=".fixed-top">
     
@@ -45,14 +45,14 @@
     
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
         <div class="container">
 
             <!-- Text Logo - Use this if you don't have a graphic logo -->
-            <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Tivo</a> -->
+            <!-- <a class="navbar-brand logo-text page-scroll" href="{{ url_for('landing') }}">Tivo</a> -->
 
             <!-- Image Logo -->
-            <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a> 
+            <a class="navbar-brand logo-image" href="{{ url_for('landing') }}"><img src="static/landing/images/logo.svg" alt="alternative"></a> 
             
             <!-- Mobile Menu Toggle Button -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,33 +64,39 @@
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link page-scroll" href="index.html#header">HOME <span class="sr-only">(current)</span></a>
+                        <a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='header') }}">HOME <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link page-scroll" href="index.html#features">FEATURES</a>
+                        <a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='features') }}">FEATURES</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link page-scroll" href="index.html#details">DETAILS</a>
+                        <a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='details') }}">DETAILS</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link page-scroll" href="index.html#video">ABOUT</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link page-scroll" href="index.html#pricing">CONTACT</a>
-                    </li>
+
                     <!-- Dropdown Menu -->          
-                  
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle page-scroll" href="{{ url_for('landing', _anchor='video') }}" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">VIDEO</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ url_for('foreqast_article_detail') }}"><span class="item-text">ARTICLE DETAILS</span></a>
+                            <div class="dropdown-items-divide-hr"></div>
+                            <a class="dropdown-item" href="{{ url_for('foreqast_terms_and_conditions') }}"><span class="item-text">TERMS CONDITIONS</span></a>
+                            <div class="dropdown-items-divide-hr"></div>
+                            <a class="dropdown-item" href="{{ url_for('foreqast_privacy_policy') }}"><span class="item-text">PRIVACY POLICY</span></a>
+                        </div>
+                    </li>
                     <!-- end of dropdown menu -->
 
-                   
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='pricing') }}">PRICING</a>
+                    </li>
                 </ul>
                 <span class="nav-item">
-                    <a class="btn-outline-sm" href="log-in.html">LOG IN</a>
+                    <a class="btn-outline-sm" href="#">LOG IN</a>
                 </span>
             </div>
-        </div> 
-    </nav> 
-
+        </div> <!-- end of container -->
+    </nav> <!-- end of navbar -->
+    <!-- end of navigation --> 
     <div class="jumbotron jumbotron-fluid" id="price-forecast">
         <div class="container">
           <h1 class="text-white text-center">PRICE FORECAST</h1>
@@ -102,7 +108,7 @@
             <div class="col-sm-4">
                 <div class="card mt-5" style="min-height: 10rem;">
                     <i>
-                    <img class="" src="images/Group-2.png" alt="Card image cap">
+                    <img class="" src="static/landing/images/Group-2.png" alt="Card image cap">
                     </i>
                     <div class="card-body">
                       <h3 class="card-title text-center ">Price Forecasting</h3>
@@ -122,14 +128,14 @@
             </div> <!-- end of col -->
             <div class="col-sm-7">
                 <div class="card">
-                    <img class="card-img-top" src="images/image 56.png" alt="Card image cap">
+                    <img class="card-img-top" src="static/landing/images/image 56.png" alt="Card image cap">
                 </div>
             </div> 
         </div> <!-- end of row -->
         <div class="row mb-4 pb-5 border-bottom">
             <div class="col-sm-7">
                 <div class="card">
-                    <img class="card-img-top" src="images/image 57.png" alt="Card image cap">
+                    <img class="card-img-top" src="static/landing/images/image 57.png" alt="Card image cap">
                 </div>
             </div> 
             <div class="col-sm-5">
@@ -171,7 +177,7 @@
             </div> <!-- end of col -->
             <div class="col-sm-7">
                 <div class="card">
-                    <img class="card-img-top" src="images/image3.png" alt="Card image cap">
+                    <img class="card-img-top" src="static/landing/images/image3.png" alt="Card image cap">
                 </div>
             </div> 
         
@@ -196,7 +202,7 @@
             </div> <!-- end of col -->
             <div class="col-sm-7">
                 <div class="card">
-                    <img class="card-img-top" src="images/image 58.png" alt="Card image cap">
+                    <img class="card-img-top" src="static/landing/images/image 58.png" alt="Card image cap">
                 </div>
             </div> 
         </div> <!-- end of row -->
@@ -204,10 +210,10 @@
             <div class="col-sm-4">
                 <div class="card mt-5" style="min-height: 10rem;">
                     <i>
-                    <img  src="images/group-1.png" alt="Card image cap">
+                    <img  src="static/landing/images/group.png" alt="Card image cap">
                     </i>
                     <div class="card-body">
-                        <a href="lord.html">
+                        <a href="{{ url_for('foreqast_load') }}">
                       <h3 class="card-title text-center  font-weight-light">Load Forecasting</h3>
                       <p class="text-center blue">
                         e-LoadForecast®</p></a>
@@ -217,10 +223,10 @@
             <div class="col-sm-4">
                 <div class="card mt-5" style="min-height: 10rem;">
                     <i>
-                    <img class="" src="images/group-2.png" alt="Card image cap">
+                    <img class="" src="static/landing/images/Group-1.png" alt="Card image cap">
                     </i>
                     <div class="card-body">
-                        <a href="power-market.html">
+                        <a href="{{ url_for('foreqast_power_market') }}">
                       <h3 class="card-title text-center  font-weight-light">Power Markets</h3>
                       <p class="text-center blue">e-ISOForecast® / e-PowerForecast®</p>
                         </a>
@@ -230,11 +236,11 @@
             <div class="col-sm-4">
                 <div class="card mt-5" style="min-height: 10rem;">
                     <i>
-                    <img  src="images/group.png" alt="Card image cap">
+                    <img  src="static/landing/images/Group-2.png" alt="Card image cap">
                     </i>
                     <div class="card-body">
 
-                        <a href="priceforecast.html">
+                        <a href="{{ url_for('foreqast_price') }}">
                       <h3 class="card-title text-center  font-weight-light">Price Forecasting</h3>
                       <p class="text-center blue">e-PF™</p>
                       </a>
@@ -258,14 +264,14 @@
     <!-- end of copyright -->
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="js/jquery.min.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
-    <script src="js/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
-    <script src="js/bootstrap.min.js"></script> <!-- Bootstrap framework -->
-    <script src="js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
-    <script src="js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
-    <script src="js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
-    <script src="js/validator.min.js"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
-    <script src="js/scripts.js"></script> <!-- Custom scripts -->
+    <script src="static/landing/js/jquery.min.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
+    <script src="static/landing/js/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
+    <script src="static/landing/js/bootstrap.min.js"></script> <!-- Bootstrap framework -->
+    <script src="static/landing/js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
+    <script src="static/landing/js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
+    <script src="static/landing/js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
+    <script src="static/landing/js/validator.min.js"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
+    <script src="static/landing/js/scripts.js"></script> <!-- Custom scripts -->
    
   </body>
 </html>
