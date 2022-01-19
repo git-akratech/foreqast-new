@@ -18,3 +18,4 @@ et-xmlfile==1.1.0
 openpyxl==3.0.9
 mysqlclient==2.1.0
 python-dotenv==0.19.2
+SQLAlchemy==1.4.29
