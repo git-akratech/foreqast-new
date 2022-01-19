@@ -16,11 +16,14 @@ def integrate_code_base():
 		fin = open('modules/landing/web/landing.py', 'r')
 		landing_web_landing = fin.read()
 
+		fin = open('modules/load_data/common/load_data.py', 'r')
+		load_data_common_load_data = fin.read()
+
 		fin = open('modules/general/app_run.py', 'r')
 		general_app_run = fin.read()
 
 		# integrated all files variables data into the one variable
-		combined_file = general_app_init + landing_web_landing + general_app_run
+		combined_file = general_app_init + landing_web_landing + load_data_common_load_data + general_app_run
 
 		# write entire integrated files in final file
 		fout = open('foreqast.py', 'w')

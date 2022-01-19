@@ -57,7 +57,14 @@ def foreqast_privacy_policy():
 @app.route('/foreqast_load', methods = ['GET']) 
 def foreqast_load():
 	try:
-		return render_template('/landing/lord.html')
+		# get initial load data from loading the graph
+		data = {
+			"from_date" : "2022-01-01",
+			"to_date" : "2022-01-10",
+			"ba_name" : "PJM"
+		}
+		data_response = get_load_data_by_avg_with_date_range(data)
+		return render_template('/landing/lord.html', bar_graph_data = data_response)
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the product - load page ...'
