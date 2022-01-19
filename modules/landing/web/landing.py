@@ -16,3 +16,12 @@ def foreqast_login():
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the login page ...'
+
+# handling signup page routing
+@app.route('/foreqast_sign_up', methods = ['GET'])
+def foreqast_sign_up():
+	try:
+		return render_template('/landing/sign-up.html')
+	except Exception as e:
+		print(str(e))
+		return 'OOPS !!!, failed to load the sign-up page ...'
