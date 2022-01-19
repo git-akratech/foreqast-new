@@ -30,6 +30,9 @@
 	
 	<!-- Favicon  -->
 		<link rel="icon" href="static/landing/images/favicon.png">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body data-spy="scroll" data-target=".fixed-top">
 		
@@ -126,18 +129,18 @@
 				<form>
 					<div class="row align-items-center">
 						<div class="form-group col-md-3">
-						    <label for="dor_balancing_authority">Select Bal. Auth.</label>
-						    <select class="form-control" id="dor_balancing_authority">
-						      <option value="PJM">PJM</option>
-						      <option>CISO</option>
-						    </select>
+								<label for="load_data_balancing_authority">Select Bal. Auth.</label>
+								<select class="form-control" id="load_data_balancing_authority">
+									<option value="PJM">PJM</option>
+									<option>CISO</option>
+								</select>
 						 </div>
 
 						 <!-- offset div -->
 						 <div class="col-md-2"></div>
 
 						 <div class="col-md-4">
-						 		<label class="control-lable"><b>Bal. Auth. wise avg last 15 days load</b></label>
+								<label class="control-lable"><b>Bal. Auth. wise avg last 15 days load</b></label>
 						 </div>
 					</div>
 				</form>
@@ -327,38 +330,38 @@
 						data,
 						options: {
 										scales: {
-										      x: {
-										        display: true,
-										        title: {
-										          display: true,
-										          text: 'Timestamp',
-										          color: 'black',
-										          font: {
-										            family: 'Comic Sans MS',
-										            size: 20,
-										            weight: 'bold',
-										            lineHeight: 1.2,
-										          },
-										          padding: {top: 20, left: 0, right: 0, bottom: 0}
-										        }
-										      },
-										      y: {
-										        display: true,
-										        title: {
-										          display: true,
-										          text: 'Load (MW)',
-										          color: 'black',
-										          font: {
-										            family: 'Comic Sans MS',
-										            size: 20,
-										            weight: 'bold',
-										            lineHeight: 1.2,
-										          },
-										          padding: {top: 20, left: 0, right: 0, bottom: 0}
-										        }
-										      }
+													x: {
+														display: true,
+														title: {
+															display: true,
+															text: 'Timestamp',
+															color: 'black',
+															font: {
+																family: 'Comic Sans MS',
+																size: 20,
+																weight: 'bold',
+																lineHeight: 1.2,
+															},
+															padding: {top: 20, left: 0, right: 0, bottom: 0}
+														}
+													},
+													y: {
+														display: true,
+														title: {
+															display: true,
+															text: 'Load (MW)',
+															color: 'black',
+															font: {
+																family: 'Comic Sans MS',
+																size: 20,
+																weight: 'bold',
+																lineHeight: 1.2,
+															},
+															padding: {top: 20, left: 0, right: 0, bottom: 0}
+														}
+													}
 										},
-							 			maintainAspectRatio: false,
+										maintainAspectRatio: false,
 										animation: {
 													onComplete: () => {
 														delayed = true;
@@ -390,6 +393,120 @@
 				);
 
 				// on change of ba name call the ajax and get the data
+				$("#load_data_balancing_authority").change(function(e) {
+					var ba_name = $('#load_data_balancing_authority').find(":selected").val();
+					var req_data = [{"ba_name" : ba_name}];
+
+					$.ajax({
+								type: "POST",
+								url: "get_ba_wise_load_data_for_last_15_days",
+								data: JSON.stringify(req_data),
+								contentType: "application/json; charset=utf-8",
+								dataType: "json",
+								success: function(response) {
+								 if(response['status']){
+									initial_bar_graph_data = response;
+										var bar_graph_15_days_lables = [];
+										var bar_graph_15_days_data = [];
+										var ba_name = ""
+										if(initial_bar_graph_data['status']){
+
+											// convert object into required data format
+											for (const [key, value] of Object.entries(initial_bar_graph_data.data)) {
+												bar_graph_15_days_lables.push(initial_bar_graph_data.data[key]['running_date']);
+												bar_graph_15_days_data.push(initial_bar_graph_data.data[key]['load_data']);
+												ba_name = initial_bar_graph_data.data[key]['ba_name'];
+											}
+
+										}else{
+											alert("for the last 15 days for the load graph data not found ...");
+										}
+
+											const data = {
+												labels: bar_graph_15_days_lables,
+												datasets: [{
+													label: ba_name + ' Load Data',
+													backgroundColor: '#a2d4f6',
+													borderColor: '#1277ba',
+													borderWidth: 1,
+													data: bar_graph_15_days_data,
+													tension: 0.5,
+												}]
+											};
+											let delayed;
+											const config = {
+												type: 'bar',
+												data,
+												options: {
+														scales: {
+																	x: {
+																		display: true,
+																		title: {
+																			display: true,
+																			text: 'Timestamp',
+																			color: 'black',
+																			font: {
+																				family: 'Comic Sans MS',
+																				size: 20,
+																				weight: 'bold',
+																				lineHeight: 1.2,
+																			},
+																			padding: {top: 20, left: 0, right: 0, bottom: 0}
+																		}
+																	},
+																	y: {
+																		display: true,
+																		title: {
+																			display: true,
+																			text: 'Load (MW)',
+																			color: 'black',
+																			font: {
+																				family: 'Comic Sans MS',
+																				size: 20,
+																				weight: 'bold',
+																				lineHeight: 1.2,
+																			},
+																			padding: {top: 20, left: 0, right: 0, bottom: 0}
+																		}
+																	}
+														},
+														maintainAspectRatio: false,
+														animation: {
+																	onComplete: () => {
+																		delayed = true;
+																	},
+																	delay: (context) => {
+																		let delay = 0;
+																		if (context.type === 'data' && context.mode === 'default' && !delayed) {
+																			delay = context.dataIndex * 600 + context.datasetIndex * 300;
+																		}
+																		return delay;
+																	},
+																},
+														plugins: {
+																tooltip: {
+																		callbacks: {
+																				label: function(context) {
+																						var label = context.dataset.label + ' = ' + context.parsed.y + ' MW';
+																						return label;
+																				}
+																		}
+																}
+														}
+												}
+											};
+										let load_data_last_15_days_graph1 = new Chart(
+															document.getElementById('load_data_last_15_days_graph'),
+															config
+														);
+								 }else{
+									alert(response['message']);
+									load_data_last_15_days_graph.destroy();
+								 }
+							 }
+					});
+
+				});
 
 			});
 
