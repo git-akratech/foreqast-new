@@ -4,9 +4,10 @@ import pandas as pd
 from sqlalchemy import create_engine, Table, MetaData, select, insert, update, delete, and_, or_, func
 
 # database configuration
-DATABASE_USERNAME = "root"
-DATABASE_PASSWORD = "root"
-DATABASE_HOSTNAME = "localhost"
+# ENV variables here
+DATABASE_USERNAME = "admin"
+DATABASE_PASSWORD = "%Monday123%"
+DATABASE_HOSTNAME = "database-1.c8uq1bsrptts.ap-south-1.rds.amazonaws.com"
 DATABASE_NAME = "akra_scraper"
 
 # Database conection
