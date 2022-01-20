@@ -18,7 +18,7 @@
 	<meta property="og:type" content="article" />
 
     <!-- Website Title -->
-    <title>Sign Up - Tivo - SaaS App HTML Landing Page Template</title>
+    <title>Article Details - Tivo - SaaS App HTML Landing Page Template</title>
     
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap&subset=latin-ext" rel="stylesheet">
@@ -26,7 +26,7 @@
     <link href="static/landing/css/fontawesome-all.css" rel="stylesheet">
     <link href="static/landing/css/swiper.css" rel="stylesheet">
 	<link href="static/landing/css/magnific-popup.css" rel="stylesheet">
-	<link href="static/landing/css/styles.css" rel="stylesheet">
+    <link href="static/landing/css/styles.css" rel="stylesheet">
 	
 	<!-- Favicon  -->
     <link rel="icon" href="static/landing/images/favicon.png">
@@ -45,11 +45,11 @@
     
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container">
 
             <!-- Text Logo - Use this if you don't have a graphic logo -->
-            <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Tivo</a> -->
+            <!-- <a class="navbar-brand logo-text page-scroll" href="{{ url_for('landing') }}">Tivo</a> -->
 
             <!-- Image Logo -->
             <a class="navbar-brand logo-image" href="{{ url_for('landing') }}"><img src="static/landing/images/logo.svg" alt="alternative"></a> 
@@ -70,74 +70,105 @@
                         <a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='features') }}">FEATURES</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='details') }}">DETAILS</a>
+                        <a class="nav-link page-scroll" href="{{ url_for('landing', _anchor = 'details') }}">DETAILS</a>
                     </li>
-
-                    <!-- Dropdown Menu -->          
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle page-scroll" href="{{ url_for('landing', _anchor='video') }}" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">VIDEO</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ url_for('foreqast_article_detail') }}"><span class="item-text">ARTICLE DETAILS</span></a>
-                            <div class="dropdown-items-divide-hr"></div>
-                            <a class="dropdown-item" href="{{ url_for('foreqast_terms_and_conditions') }}"><span class="item-text">TERMS CONDITIONS</span></a>
-                            <div class="dropdown-items-divide-hr"></div>
-                            <a class="dropdown-item" href="{{ url_for('foreqast_privacy_policy') }}"><span class="item-text">PRIVACY POLICY</span></a>
-                        </div>
-                    </li>
-                    <!-- end of dropdown menu -->
-
                     <li class="nav-item">
-                        <a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='pricing') }}">PRICING</a>
+                        <a class="nav-link page-scroll" href="{{ url_for('landing', _anchor = 'video') }}">ABOUT</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="{{ url_for('landing', _anchor = 'pricing') }}">CONTACT</a>
+                    </li>
+                    <!-- Dropdown Menu -->          
+                  
+                    <!-- end of dropdown menu -->
                 </ul>
                 <span class="nav-item">
                     <a class="btn-outline-sm" href="{{ url_for('foreqast_login') }}">LOG IN</a>
                 </span>
+                <span class="nav-item">
+                    <a class="btn-outline-sm" href="{{ url_for('foreqast_sign_up') }}">SIGN IN</a>
+                </span>
             </div>
-        </div> <!-- end of container -->
-    </nav> <!-- end of navbar -->
-    <!-- end of navigation -->
-
+        </div> 
+    </nav> 
 
     <!-- Header -->
     <header id="header" class="ex-2-header">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>Sign Up</h1>
-                   <p>Fill out the form below to sign up for Tivo. Already signed up? Then just <a class="white" href="{{ url_for('foreqast_login') }}">Log In</a></p> 
-                    <!-- Sign Up Form -->
+                    <img class="img-fluid" src="static/landing/images/logo.png" alt="alternative">
                     <div class="form-container">
-                        <form id="signUpForm" data-toggle="validator" data-focus="false">
+                        <h2>Create an Account</h2>
+                        <form id="logInForm mt-2 "class="text-left" data-toggle="validator" data-focus="false">
                             <div class="form-group">
-                                <input type="email" class="form-control-input" id="semail" required>
-                                <label class="label-control" for="semail">Email</label>
+                               
+                                <label class="exampleInputEmail1" for="lyourname">Your Name</label>
+                                 
+                                <input type="text" class="form-control" id="lyourname" required>
+                              
                                 <div class="help-block with-errors"></div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control-input" id="sname" required>
-                                <label class="label-control" for="sname">Name</label>
+
+                             <div class="form-group">
+                               
+                                <label class="exampleInputEmail1" for="lyouremail">Your Email</label>
+                                 
+                                <input type="text" class="form-control" id="lyouremail" required>
+                              
                                 <div class="help-block with-errors"></div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control-input" id="spassword" required>
-                                <label class="label-control" for="spassword">Password</label>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group checkbox">
-                                <input type="checkbox" id="sterms" value="Agreed-to-Terms" required>I agree with Tivo's <a href="privacy-policy.html">Privacy Policy</a> and <a href="terms-conditions.html">Terms Conditions</a>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group">
+                            
+                                <label class="exampleInputEmail1 " for="lemail">Username</label>
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                  </div>
+                                  <input type="text" class="form-control" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
+                                  
+                                </div>
+                           
+                            <div class="input-group mt-2">
+                                <label class="exampleInputEmail1 " for="lpassword">Paassword</label>
+                                <div  class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                  </div>
+                                  <input type="text" class="form-control" id="lpassword" aria-describedby="inputGroupPrepend" required>
+                                  <div class="help-block with-errors"></div>
+                                  </div>
+                                </div>
+                                <div class="form-group checkbox mt-3">
+                                    <input type="checkbox" id="sterms" value="Agreed-to-Terms" required>I agree with Tivo's <a href="privacy-policy.html">Privacy Policy</a> and <a href="terms-conditions.html" class="btn-link"style="color:#4c3ee0;">Terms Conditions</a>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                    
+                            <div class="form-group mt-2">
                                 <button type="submit" class="form-control-submit-button">SIGN UP</button>
                             </div>
                             <div class="form-message">
-                                <div id="smsgSubmit" class="h3 text-center hidden"></div>
+                                <div id="lmsgSubmit" class="h3 text-center hidden"></div>
                             </div>
+                            
+                            <div class="form-group">
+                              
+                                    <div>
+                                        Already have an account? 
+                                         <a href="{{ url_for('foreqast_login') }}"class="btn-link" style="color: #4c3ee0;">
+                                            Log in 
+                                    </a>
+                                    </div>
+                                
+                            </div> 
                         </form>
+                      
                     </div> <!-- end of form container -->
-                    <!-- end of sign up form -->
-
+                   
+                </div>   
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
         </div> <!-- end of container -->
