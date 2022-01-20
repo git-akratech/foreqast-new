@@ -7,16 +7,21 @@ db_table_foreqast_load_data = Table('foreqast_load_data', sql_metadata, autoload
 def get_load_data_by_avg_with_date_range(data):
 	response = {"status" : False, "message" : "", "data" : {}}
 	try:
+		# get the object data
 		from_date = data['from_date']
 		to_date = data['to_date']
 		ba_name = data['ba_name']
 
 		# select data query
 		data_list = []
-		select_query = "select date_format(`timestamp`, '%%Y-%%m-%%d') as running_date, round(avg(load_MW), 2) as load_data, ba_name from foreqast_load_data group by date_format(`timestamp`, '%%Y-%%m-%%d') having ba_name = 'PJM' and running_date between '2021-12-15' and '2022-01-10'"
-		result = app._engine.execute(select_query)
-		if result.rowcount > 0:
-			for row in result:
+		select_query = "select date_format(`timestamp`, '%%Y-%%m-%%d') as running_date, round(avg(load_MW), 2) as load_data, ba_name from foreqast_load_data group by ba_name, date_format(`timestamp`, '%%Y-%%m-%%d') having ba_name = '{ba_name}' and running_date between '{from_date}' and '{to_date}'".format(ba_name = ba_name, from_date = from_date, to_date = to_date)
+
+		# execute the query
+		load_result = app._engine.execute(select_query)
+
+		# check for the result
+		if load_result.rowcount > 0:
+			for row in load_result:
 				data_list.append(dict(row.items()))
 			response['status'] = True
 			response['data'] = data_list

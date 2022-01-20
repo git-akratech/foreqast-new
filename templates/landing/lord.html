@@ -29,7 +29,12 @@
 		<link href="static/landing/css/styles.css" rel="stylesheet">
 	
 	<!-- Favicon  -->
-		<link rel="icon" href="static/landing/images/favicon.png">
+	<link rel="icon" href="static/landing/images/favicon.png">
+
+	<!-- chart js -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body data-spy="scroll" data-target=".fixed-top">
 		
@@ -117,6 +122,42 @@
 								<p class="text-black-50 "><b>e-LoadForecast<sup>®</sup></b> is a 24/7 online load forecast service that delivers extremely accurate forecasts for client-specific electric or gas load data. Forecasts are generated for different horizons and timespans. The forecasting engine consists of an ensemble of several different intelligent system-based models that employ various state-of-the-art technologies. The utilized weather data is a blend of forecasts provided by four major weather vendors. This is an ideal tool for system operators, dispatchers, schedulers, Retail Electric Providers, load aggregators, energy transactions, system planners and Risk Analysts.</p>
 						</div> <!-- end of col -->
 				</div> <!-- end of row -->
+
+				<!-- graph row start -->
+				<form>
+					<div class="row align-items-center">
+						<div class="form-group col-md-3">
+								<label for="load_data_balancing_authority">Select Bal. Auth.</label>
+								<select class="form-control" id="load_data_balancing_authority">
+									<option value="PJM">PJM</option>
+									<option>CISO</option>
+								</select>
+						 </div>
+
+						 <div class="form-group col-md-3">
+								<label for="load_data_from_date">From Date</label>
+								<input type="date" class="form-control" id="load_data_from_date" name="load_data_from_date" value="2021-12-22" />
+						 </div>
+
+							<div class="form-group col-md-3">
+								<label for="load_data_to_date">To Date</label>
+								<input type="date" class="form-control" id="load_data_to_date" name="load_data_to_date" value="2022-01-10" />
+							</div>
+
+							<div class="form-group col-md-2 align-bottom" style="margin-left: 30px;">
+								<a class="btn-outline-sm" id="avg_load_chart_apply_filter_btn" >Apply Filter</a>
+							</div>
+
+					</div>
+				</form>
+
+				<div class="row border-bottom">
+						<div class="col-md-12" style="height: 400px !important;" id="graph-container">
+								<canvas id="avg_load_chart"></canvas>
+						</div>
+				</div>
+				<!-- graph row end -->
+
 				<div class="row mb-4 pb-5 border-bottom">
 						<div class="col-sm-7 ">
 								<h3 class="pl-4">Short Term Electric & Gas Load 
@@ -256,5 +297,128 @@
 		<script src="static/landing/js/validator.min.js"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
 		<script src="static/landing/js/scripts.js"></script> <!-- Custom scripts -->
 	 
+	 <!-- chart js graphs js here -->
+	 <script type="text/javascript">
+		$(document).ready(function(e) {
+
+		// get the initial request data from jinja2 to js
+		var data_obj = JSON.parse('{{ bar_graph_data | tojson }}');
+
+		// call avg load chart generator function
+		avg_load_chart_draw(data_obj);
+
+		function avg_load_chart_draw(obj){
+				// Remove graph and reload. because old graph is showing
+				$('#avg_load_chart').remove(); // this is <canvas> element
+				$('#graph-container').append('<canvas id="avg_load_chart"><canvas>');
+
+				var canvas = document.getElementById("avg_load_chart");
+				var ctx = canvas.getContext('2d');
+
+				var avg_load_chart = null;
+
+				var initial_avg_load_chart_data = obj;
+				var avg_load_chart_lables = [];
+				var avg_load_chart_data = [];
+				var ba_name = "";
+
+				if(initial_avg_load_chart_data['status']){
+
+					// convert object into required data format
+					for (const [key, value] of Object.entries(initial_avg_load_chart_data.data)) {
+						avg_load_chart_lables.push(initial_avg_load_chart_data.data[key]['running_date']);
+						avg_load_chart_data.push(initial_avg_load_chart_data.data[key]['load_data']);
+						ba_name = initial_avg_load_chart_data.data[key]['ba_name'];
+					}
+
+					// create chart data
+					var chart_data = {
+								labels: avg_load_chart_lables,
+								datasets: [{
+										label: ba_name + ' Load',
+										fill: false,
+										lineTension: 0.3,
+										backgroundColor: '#a2d4f6',
+										borderColor: '#1277ba',
+										borderWidth: 2,
+										data: avg_load_chart_data,
+									}
+
+								]
+							};
+
+					// create chart options
+					var chart_options = {
+						maintainAspectRatio: false,
+						scales: {
+											yAxes: [{
+													ticks: {
+															beginAtZero:false
+													},
+													scaleLabel: {
+															 display: true,
+															 labelString: 'Load (MW)',
+															 fontSize: 20
+														},
+											}],
+											xAxes: [{
+													ticks: {
+															beginAtZero:false
+													},
+													scaleLabel: {
+															 display: true,
+															 labelString: 'Timestamp',
+															 fontSize: 20
+														},
+											}]
+										},
+					};
+
+					// generate chart
+					var line_chart = new Chart(ctx, {
+						type: 'line',
+						data: chart_data,
+						options: chart_options
+					});
+
+				}else{
+					alert("For this filter load data not found ...");
+				}
+
+		}
+
+			// on click of avg_load_chart_apply_filter_btn
+			$("#avg_load_chart_apply_filter_btn").click(function(e) {
+				// get the required details
+				let ba_name = $('#load_data_balancing_authority').find(":selected").val();
+				let from_date = $("#load_data_from_date").val();
+				let to_date = $("#load_data_to_date").val();
+
+				// convert this data into the object for passing to the server
+				let request_obj = [{"ba_name" : ba_name, "from_date" : from_date, "to_date" : to_date}];
+
+				// call to the ajax
+				$.ajax({
+							type: "POST",
+							url: "get_ba_wise_avg_load_data_for_date_range",
+							data: JSON.stringify(request_obj),
+							contentType: "application/json; charset=utf-8",
+							dataType: "json",
+							success: function(response) {
+							 if(response['status']){
+								 	// call to the common method
+									avg_load_chart_draw(response);
+							 }else{
+								alert(response['message']);
+							 }
+							}
+					});
+
+			});
+
+		});
+
+	 </script>
+
 	</body>
 </html>
