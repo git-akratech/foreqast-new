@@ -381,7 +381,7 @@
 																<div class="help-block with-errors"></div>
 														</div>
 														<div class="form-group checkbox">
-																<input type="checkbox" id="nterms" value="Agreed-to-Terms" required>I've read and agree to Tivo's written <a href="privacy-policy.html">Privacy Policy</a> and <a href="terms-conditions.html">Terms Conditions</a> 
+																<input type="checkbox" id="nterms" value="Agreed-to-Terms" required>I've read and agree to Tivo's written <a href="{{ url_for('foreqast_privacy_policy') }}">Privacy Policy</a> and <a href="{{ url_for('foreqast_terms_and_conditions') }}">Terms Conditions</a> 
 																<div class="help-block with-errors"></div>
 														</div>
 														<div class="form-group">
@@ -459,7 +459,7 @@
 														</li>
 														<li class="media">
 																<i class="fas fa-square"></i>
-																<div class="media-body">Read our <a class="white" href="terms-conditions.html">Terms & Conditions</a>, <a class="white" href="privacy-policy.html">Privacy Policy</a></div>
+																<div class="media-body">Read our <a class="white" href="{{ url_for('foreqast_terms_and_conditions') }}">Terms & Conditions</a>, <a class="white" href="{{ url_for('foreqast_privacy_policy') }}">Privacy Policy</a></div>
 														</li>
 												</ul>
 										</div>
