@@ -16,7 +16,7 @@ db_engine = create_engine('mysql://' + DATABASE_USERNAME + ':' + DATABASE_PASSWO
 # data verification and insert script generation
 def convert_excel_into_insert_script():
     # read the excel
-    excel_file_name = "CISO.xlsx"
+    excel_file_name = "scraping_data/load/ERCO.xlsx"
     df = pd.read_excel(str(excel_file_name), sheet_name="Sheet1", engine='openpyxl')
     
     # remove the duplicate records
