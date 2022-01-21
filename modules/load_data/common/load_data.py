@@ -35,3 +35,32 @@ def get_load_data_by_avg_with_date_range(data):
 		response["message"] = "Error while getting avg load data ..."
 		return response
 
+# get the load data for last 5 records
+def get_load_data_latest_records(data):
+	response = {"status" : False, "message" : "", "data" : {}}
+	try:
+		# get the object data
+		ba_name = data['ba_name']
+
+		# select data query
+		data_list = []
+		select_query = "select date_format(`timestamp`, '%%Y-%%m-%%d %%H:%%m') as running_date, round(load_MW, 2) as load_data, ba_name from foreqast_load_data group by ba_name, date_format(`timestamp`, '%%Y-%%m-%%d %%H:%%m') having ba_name = '{ba_name}' order by running_date desc limit 0, 10".format(ba_name = ba_name)
+
+		# execute the query
+		load_result = app._engine.execute(select_query)
+
+		# check for the result
+		if load_result.rowcount > 0:
+			for row in load_result:
+				data_list.append(dict(row.items()))
+			response['status'] = True
+			response['data'] = data_list
+		else:
+			response['message'] = "For this filter, no data available ..."
+
+		# return common response
+		return response
+	except Exception as e:
+		print(str(e))
+		response["message"] = "Error while getting latest load data ..."
+		return response

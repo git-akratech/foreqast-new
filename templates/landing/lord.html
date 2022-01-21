@@ -161,7 +161,7 @@
 				<!-- graph row end -->
 
 				<div class="row mb-4 pb-5 border-bottom">
-						<div class="col-sm-7 ">
+						<div class="col-sm-6 ">
 								<h3 class="pl-4">Short Term Electric & Gas Load 
 										Forecasting</h3>
 								<ul class="text-black-50 mt-4">
@@ -176,12 +176,15 @@
 										<li>Various tools for upload of actual loads in a variety of file formats</li>
 								</ul>
 						</div> <!-- end of col -->
-						<div class="col-sm-5">
+						<div class="col-sm-6">
 								<div class="card">
-										<img class="card-img-top" src="static/landing/images/image1.png" alt="Card image cap">
+										<div style="height: 440px !important;" id="hourly-graph-container">
+												<canvas id="hourly_load_chart"></canvas>
+										</div>
 								</div>
 						</div> 
 				</div> <!-- end of row -->
+
 				<div class="row mb-4 pb-5 border-bottom">
 						<div class="col-sm-5">
 								<div class="card">
@@ -303,12 +306,19 @@
 	 <script type="text/javascript">
 		$(document).ready(function(e) {
 
-		// get the initial request data from jinja2 to js
-		var data_obj = JSON.parse('{{ bar_graph_data | tojson }}');
+		// get the initial request avg load data from jinja2 to js
+		var avg_load_data_obj = JSON.parse('{{ bar_graph_data | tojson }}');
 
 		// call avg load chart generator function
-		avg_load_chart_draw(data_obj);
+		avg_load_chart_draw(avg_load_data_obj);
 
+		// get the initial request hourly load data from jinja2 to js
+		var hourly_load_data_obj = JSON.parse('{{ get_load_data_latest_records_response | tojson }}');
+
+		// call avg load chart generator function
+		hourly_load_chart_draw(hourly_load_data_obj);
+
+		// function for load avg load chart
 		function avg_load_chart_draw(obj){
 				// Remove graph and reload. because old graph is showing
 				$('#avg_load_chart').remove(); // this is <canvas> element
@@ -316,8 +326,6 @@
 
 				var canvas = document.getElementById("avg_load_chart");
 				var ctx = canvas.getContext('2d');
-
-				var avg_load_chart = null;
 
 				var initial_avg_load_chart_data = obj;
 				var avg_load_chart_lables = [];
@@ -388,37 +396,143 @@
 				}else{
 					alert("For this filter load data not found ...");
 				}
-
 		}
 
-			// on change of graph filter options
-			$("#load_data_balancing_authority, #load_data_from_date, #load_data_to_date").change(function(e) {
-				// get the required details
-				let ba_name = $('#load_data_balancing_authority').find(":selected").val();
-				let from_date = $("#load_data_from_date").val();
-				let to_date = $("#load_data_to_date").val();
+		// function for load hourly load chart
+		function hourly_load_chart_draw(obj){
+				// Remove graph and reload. because old graph is showing
+				$('#hourly_load_chart').remove(); // this is <canvas> element
+				$('#hourly-graph-container').append('<canvas id="hourly_load_chart"><canvas>');
 
-				// convert this data into the object for passing to the server
-				let request_obj = [{"ba_name" : ba_name, "from_date" : from_date, "to_date" : to_date}];
+				var hourly_canvas = document.getElementById("hourly_load_chart");
+				var hourly_ctx = hourly_canvas.getContext('2d');
 
-				// call to the ajax
-				$.ajax({
-							type: "POST",
-							url: "get_ba_wise_avg_load_data_for_date_range",
-							data: JSON.stringify(request_obj),
-							contentType: "application/json; charset=utf-8",
-							dataType: "json",
-							success: function(response) {
-							 if(response['status']){
-								 	// call to the common method
-									avg_load_chart_draw(response);
-							 }else{
-								alert(response['message']);
-							 }
-							}
+				var initial_hourly_load_chart_data = obj;
+				var hourly_load_chart_lables = [];
+				var hourly_load_chart_data = [];
+				var ba_name = "";
+
+				if(initial_hourly_load_chart_data['status']){
+
+					// convert object into required data format
+					for (const [key, value] of Object.entries(initial_hourly_load_chart_data.data)) {
+						hourly_load_chart_lables.push(initial_hourly_load_chart_data.data[key]['running_date']);
+						hourly_load_chart_data.push(initial_hourly_load_chart_data.data[key]['load_data']);
+						ba_name = initial_hourly_load_chart_data.data[key]['ba_name'];
+					}
+
+					// create chart data
+					var chart_data = {
+								labels: hourly_load_chart_lables,
+								datasets: [{
+										label: ba_name + ' Load',
+										fill: false,
+										lineTension: 0.3,
+										backgroundColor: '#a2d4f6',
+										borderColor: '#1277ba',
+										borderWidth: 2,
+										data: hourly_load_chart_data,
+									}
+
+								]
+							};
+
+					// create chart options
+					var chart_options = {
+						maintainAspectRatio: false,
+						scales: {
+											yAxes: [{
+													ticks: {
+															beginAtZero:true
+													},
+													scaleLabel: {
+															 display: true,
+															 labelString: 'Load (MW)',
+															 fontSize: 18,
+															 fontStyle: 'bold',
+														},
+											}],
+											xAxes: [{
+													ticks: {
+															beginAtZero:false
+													},
+													scaleLabel: {
+															 display: true,
+															 labelString: 'Timestamp',
+															 fontSize: 18,
+															 fontStyle: 'bold',
+														},
+											}]
+										},
+					};
+
+					// generate chart
+					var hourly_chart = new Chart(hourly_ctx, {
+						type: 'bar',
+						data: chart_data,
+						options: chart_options
 					});
 
-			});
+				}else{
+					alert("For this filter load data not found ...");
+				}
+		}
+
+		// on change of graph filter options
+		$("#load_data_balancing_authority, #load_data_from_date, #load_data_to_date").change(function(e) {
+			// get the required details
+			let ba_name = $('#load_data_balancing_authority').find(":selected").val();
+			let from_date = $("#load_data_from_date").val();
+			let to_date = $("#load_data_to_date").val();
+
+			// convert this data into the object for passing to the server
+			let request_obj = [{"ba_name" : ba_name, "from_date" : from_date, "to_date" : to_date}];
+
+			// call to the ajax
+			$.ajax({
+						type: "POST",
+						url: "get_ba_wise_avg_load_data_for_date_range",
+						data: JSON.stringify(request_obj),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function(response) {
+						 if(response['status']){
+							 	// call to the common method
+								avg_load_chart_draw(response);
+						 }else{
+							alert(response['message']);
+						 }
+						}
+				});
+		});
+
+
+		// on change of ba change the houry graph
+		$("#load_data_balancing_authority").change(function(e) {
+			// get the required details
+			let ba_name = $('#load_data_balancing_authority').find(":selected").val();
+
+			// convert this data into the object for passing to the server
+			let request_obj = [{"ba_name" : ba_name}];
+
+			// call to the ajax
+			$.ajax({
+						type: "POST",
+						url: "get_ba_wise_hourly_load_data",
+						data: JSON.stringify(request_obj),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function(response) {
+						 if(response['status']){
+							 	// call to the common method
+								hourly_load_chart_draw(response);
+						 }else{
+							alert(response['message']);
+						 }
+						}
+				});
+		});
+
 
 		});
 
