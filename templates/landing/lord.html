@@ -106,7 +106,7 @@
 		</div>
 
 		<div class="container">
-				<div class="row mb-4 pb-4   border-bottom">
+				<div class="row mb-4 pb-4 border-bottom">
 						<div class="col-sm-4">
 								<div class="card mt-5" style="min-height: 10rem;">
 										<i>
@@ -124,34 +124,39 @@
 				</div> <!-- end of row -->
 
 				<!-- graph row start -->
-				<form>
-					<div class="row align-items-center">
-						<div class="form-group col-md-3">
-								<label for="load_data_balancing_authority">Select Bal. Auth.</label>
-								<select class="form-control" id="load_data_balancing_authority">
-									<option value="PJM">PJM</option>
-									<option value="CISO">CISO</option>
-									<option value="ERCO">ERCO</option>
-								</select>
-						 </div>
-
-						 <div class="form-group col-md-3">
-								<label for="load_data_from_date">From Date</label>
-								<input type="date" class="form-control" id="load_data_from_date" name="load_data_from_date" value="2021-12-22" />
-						 </div>
-
+				<div class="border">
+					<form>
+						<div class="row align-items-center">
+							<div class="form-group col-md-1">
+							</div>
 							<div class="form-group col-md-3">
-								<label for="load_data_to_date">To Date</label>
-								<input type="date" class="form-control" id="load_data_to_date" name="load_data_to_date" value="2022-01-10" />
+									<label for="load_data_balancing_authority">Select Bal. Auth.</label>
+									<select class="form-control" id="load_data_balancing_authority">
+										<option value="PJM">PJM</option>
+										<option value="CISO">CISO</option>
+										<option value="ERCO">ERCO</option>
+									</select>
+							 </div>
+
+							 <div class="form-group col-md-3">
+									<label for="load_data_from_date">From Date</label>
+									<input type="date" class="form-control" id="load_data_from_date" name="load_data_from_date" value="2021-12-22" />
+							 </div>
+
+								<div class="form-group col-md-3">
+									<label for="load_data_to_date">To Date</label>
+									<input type="date" class="form-control" id="load_data_to_date" name="load_data_to_date" value="2022-01-10" />
+								</div>
+							</div>
+					</form>
+
+					<div class="row">
+							<div class="col-md-12" style="height: 400px !important;" id="graph-container">
+									<canvas id="avg_load_chart"></canvas>
 							</div>
 					</div>
-				</form>
-
-				<div class="row border-bottom">
-						<div class="col-md-12" style="height: 400px !important;" id="graph-container">
-								<canvas id="avg_load_chart"></canvas>
-						</div>
 				</div>
+				<br/>
 				<!-- graph row end -->
 
 				<div class="row mb-4 pb-5 border-bottom">
