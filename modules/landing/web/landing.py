@@ -64,7 +64,10 @@ def foreqast_load():
 			"ba_name" : "PJM"
 		}
 		data_response = get_load_data_by_avg_with_date_range(data)
-		return render_template('/landing/lord.html', bar_graph_data = data_response)
+
+		# get ba wise last 5 records
+		get_load_data_latest_records_response = get_load_data_latest_records(data)
+		return render_template('/landing/lord.html', bar_graph_data = data_response, get_load_data_latest_records_response = get_load_data_latest_records_response)
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the product - load page ...'
