@@ -795,11 +795,19 @@ input[type='checkbox'] {
 /*********************/
 .header {
 	
-		background-color: #00A6EB;
-		background-image: url(https://i.ibb.co/4Y1nczP/nicholas-doherty-i40ixw-buju-unsplash-w1920.webp);
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-position: bottom;	
+	background-color: #00A6EB;
+    background-image: url(https://media.nationalgeographic.org/assets/photos/818/719/3d97f911-594f-4257-880c-d9aa1c6da22d.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    position: relative;	
+}
+header#header:before {
+    content: "";
+    width: 100%;
+    background: #00000075;
+    position: absolute;
+    height: 100%;
 }
 
 .header .header-content {
