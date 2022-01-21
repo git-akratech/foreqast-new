@@ -421,15 +421,29 @@
 						ba_name = initial_hourly_load_chart_data.data[key]['ba_name'];
 					}
 
+					Chart.pluginService.register({
+								beforeDraw: function (chart, easing) {
+									if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
+										var helpers = Chart.helpers;
+										var ctx = chart.chart.ctx;
+										var chartArea = chart.chartArea;
+
+										ctx.save();
+										ctx.fillStyle = chart.config.options.chartArea.backgroundColor;
+										ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+										ctx.restore();
+									}
+								}
+							});
+
 					// create chart data
 					var chart_data = {
 								labels: hourly_load_chart_lables,
 								datasets: [{
 										label: ba_name + ' Load',
 										fill: false,
-										lineTension: 0.3,
-										backgroundColor: '#a2d4f6',
-										borderColor: '#1277ba',
+										backgroundColor: 'blue',
+										borderColor: 'blue',
 										borderWidth: 2,
 										data: hourly_load_chart_data,
 									}
@@ -440,6 +454,9 @@
 					// create chart options
 					var chart_options = {
 						maintainAspectRatio: false,
+						chartArea: {
+											backgroundColor: '#F8F8F8'
+										},
 						scales: {
 											yAxes: [{
 													ticks: {
@@ -448,7 +465,7 @@
 													scaleLabel: {
 															 display: true,
 															 labelString: 'Load (MW)',
-															 fontSize: 18,
+															 fontSize: 15,
 															 fontStyle: 'bold',
 														},
 											}],
@@ -459,7 +476,7 @@
 													scaleLabel: {
 															 display: true,
 															 labelString: 'Timestamp',
-															 fontSize: 18,
+															 fontSize: 15,
 															 fontStyle: 'bold',
 														},
 											}]
