@@ -89,7 +89,14 @@ def foreqast_power_market():
 @app.route('/foreqast_price', methods = ['GET']) 
 def foreqast_price():
 	try:
-		return render_template('/landing/priceforecast.html')
+		# get initial generation data from loading the graph
+		data = {
+			"from_date" : "2021-12-22",
+			"to_date" : "2022-01-10",
+			"ba_name" : "PJM"
+		}
+		data_response = get_generation_data_by_avg_with_date_range(data)
+		return render_template('/landing/priceforecast.html', bar_graph_data = data_response)
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the product - price page ...'
