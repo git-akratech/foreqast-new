@@ -62,11 +62,14 @@
 												<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='features') }}">FEATURES</a>
 										</li>
 										<li class="nav-item">
-												<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='details') }}">DETAILS</a>
+												<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='details') }}">PRODUCTS</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='video') }}">ABOUT</a>
 										</li>
 
 										<!-- Dropdown Menu -->          
-										<li class="nav-item dropdown">
+										<!-- <li class="nav-item dropdown">
 												<a class="nav-link dropdown-toggle page-scroll" href="{{ url_for('landing', _anchor='header') }}#video" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">VIDEO</a>
 												<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 														<a class="dropdown-item" href="{{ url_for('foreqast_article_detail') }}"><span class="item-text">ARTICLE DETAILS</span></a>
@@ -75,16 +78,16 @@
                             <div class="dropdown-items-divide-hr"></div>
                             <a class="dropdown-item" href="{{ url_for('foreqast_privacy_policy') }}"><span class="item-text">PRIVACY POLICY</span></a>
 												</div>
-										</li>
+										</li> -->
 										<!-- end of dropdown menu -->
 
 										<li class="nav-item">
 												<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='pricing') }}">PRICING</a>
 										</li>
 								</ul>
-								<span class="nav-item">
+								<!-- <span class="nav-item">
 										<a class="btn-outline-sm" href="{{ url_for('foreqast_login') }}">LOG IN</a>
-								</span>
+								</span> -->
 								<span class="nav-item">
 										<a class="btn-outline-sm" href="{{ url_for('foreqast_sign_up') }}">SIGN IN</a>
 								</span>

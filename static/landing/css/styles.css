@@ -799,9 +799,7 @@ input[type='checkbox'] {
 		background-image: url(https://i.ibb.co/4Y1nczP/nicholas-doherty-i40ixw-buju-unsplash-w1920.webp);
 		background-repeat: no-repeat;
 		background-size: cover;
-		background-position: center;
-	
-	
+		background-position: bottom;	
 }
 
 .header .header-content {
@@ -1753,7 +1751,7 @@ a:hover.back-to-top {
 	
 	/* Navigation */
 	.navbar-custom {
-		padding: 1.25rem 1.5rem 1.25rem 2rem;
+		padding: 0.25rem 1.5rem 0.25rem 2rem;
         background: transparent;
 		box-shadow: none;
 	}
@@ -1928,7 +1926,6 @@ a:hover.back-to-top {
 	}
 
 	.basic-2 p {
-		width: 64%;
 		margin-right: auto;
 		margin-left: auto;
 	}
@@ -2022,8 +2019,8 @@ a:hover.back-to-top {
 
 	/* Header */
 	.header .header-content {
-		padding-top: 11rem;
-		padding-bottom: 5rem;
+		padding-top: 9rem;
+		padding-bottom: 13rem;
 	}
 
 	.header .text-container {
@@ -2205,21 +2202,11 @@ a:hover.back-to-top {
 	background-size: cover;
 	min-height: 280px;
 }
-.card{
-	border: 1px solid #e8eae9;
-    /* margin: 60px 0; */
-    /* padding: 10px; */
-    text-align: center;
-    transition: all 0.5s ease 0s;
-    -webkit-transition: all 0.5s ease 0s;
 
-}
 .card:hover{
 	box-shadow: 0px 1px 8px 3px rgb(0 0 0 / 8%);
-    border-radius: 8px;
-    /* border: none; */
-
 }
+
 .card >i{
 display: block;
     height: 85px;
@@ -2228,18 +2215,35 @@ display: block;
     width: 85px;
 }
 
-.img{
-position: relative;
-max-height: 164px;
-max-width: 171px;
-top: -107px;
-text-align: center;
-/* left: 33px; */
-margin-right: auto;
-margin-left: auto;
-}
  b{
     font-family: 'ChaletNewYorkNineteenSixty';
     /* font-weight: normal; */
 }
 /*  */
+
+.ourTeam .card-body {
+	min-height: 225px;
+}
+.ourTeam .img-wrapper {
+	 min-height: 75px;
+	 position: relative;
+	 display: flex;
+     justify-content: center;
+}
+.ourTeam .img{
+	position: absolute;
+    max-width: 140px;
+    top: -75px;
+    text-align: center;
+    margin: auto;
+    border: 1px solid #352e86;
+    border-radius: 50%;
+}
+
+.text-md {
+	font-size: 18px;
+}
+
+.text-justify {
+	text-align: justify;
+}
