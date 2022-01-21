@@ -73,7 +73,14 @@ def foreqast_load():
 @app.route('/foreqast_power_market', methods = ['GET']) 
 def foreqast_power_market():
 	try:
-		return render_template('/landing/power-market.html')
+		# get initial trade data from loading the graph
+		data = {
+			"from_date" : "2021-12-22",
+			"to_date" : "2022-01-10",
+			"ba_name" : "PJM"
+		}
+		data_response = get_trade_data_by_avg_with_date_range(data)
+		return render_template('/landing/power-market.html', bar_graph_data = data_response)
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the product - power page ...'

@@ -17,3 +17,12 @@ CREATE TABLE `foreqast_load_data` (
   `load_MW` DOUBLE NULL,
   `market` VARCHAR(45) NULL,
   PRIMARY KEY (`id`));
+
+CREATE TABLE `foreqast_trade_data` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `ba_name` VARCHAR(45) NULL,
+  `timestamp` DATETIME NULL,
+  `freq` VARCHAR(45) NULL,
+  `net_exp_MW` DOUBLE NULL,
+  `market` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`));
