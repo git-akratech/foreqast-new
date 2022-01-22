@@ -179,7 +179,7 @@
 						<div class="col-sm-6">
 								<div class="card">
 										<div style="height: 440px !important;" id="hourly-graph-container">
-												<canvas id="hourly_load_chart"></canvas>
+												<canvas id="hourly_load_chart" style="background-color : black;"></canvas>
 										</div>
 								</div>
 						</div> 
@@ -402,7 +402,7 @@
 		function hourly_load_chart_draw(obj){
 				// Remove graph and reload. because old graph is showing
 				$('#hourly_load_chart').remove(); // this is <canvas> element
-				$('#hourly-graph-container').append('<canvas id="hourly_load_chart"><canvas>');
+				$('#hourly-graph-container').append('<canvas id="hourly_load_chart" style="background-color : black;"><canvas>');
 
 				var hourly_canvas = document.getElementById("hourly_load_chart");
 				var hourly_ctx = hourly_canvas.getContext('2d');
@@ -442,8 +442,8 @@
 								datasets: [{
 										label: ba_name + ' Load',
 										fill: false,
-										backgroundColor: 'blue',
-										borderColor: 'blue',
+										backgroundColor: '#3333ff',
+										borderColor: 'white',
 										borderWidth: 2,
 										data: hourly_load_chart_data,
 									}
@@ -453,30 +453,46 @@
 
 					// create chart options
 					var chart_options = {
+						legend: {
+								labels: {
+										fontColor: "white",
+										fontSize: 15
+								}
+						},
 						maintainAspectRatio: false,
 						chartArea: {
-											backgroundColor: '#F8F8F8'
+											backgroundColor: 'black'
 										},
 						scales: {
 											yAxes: [{
+													gridLines: {
+															color: ['white', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
+													},
 													ticks: {
-															beginAtZero:true
+															beginAtZero:true,
+															fontColor: "white"
 													},
 													scaleLabel: {
 															 display: true,
 															 labelString: 'Load (MW)',
 															 fontSize: 15,
+															 fontColor: 'white',
 															 fontStyle: 'bold',
 														},
 											}],
 											xAxes: [{
+													gridLines: {
+															color: ['white', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
+													},
 													ticks: {
-															beginAtZero:false
+															beginAtZero:false,
+															fontColor: "white"
 													},
 													scaleLabel: {
 															 display: true,
 															 labelString: 'Timestamp',
 															 fontSize: 15,
+															 fontColor: 'white',
 															 fontStyle: 'bold',
 														},
 											}]
@@ -514,7 +530,7 @@
 						dataType: "json",
 						success: function(response) {
 						 if(response['status']){
-							 	// call to the common method
+								// call to the common method
 								avg_load_chart_draw(response);
 						 }else{
 							alert(response['message']);
@@ -541,7 +557,7 @@
 						dataType: "json",
 						success: function(response) {
 						 if(response['status']){
-							 	// call to the common method
+								// call to the common method
 								hourly_load_chart_draw(response);
 						 }else{
 							alert(response['message']);
