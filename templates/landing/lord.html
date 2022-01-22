@@ -176,22 +176,8 @@
 										<li>Various tools for upload of actual loads in a variety of file formats</li>
 								</ul>
 						</div> <!-- end of col -->
-						<div class="col-sm-6">
-								<div class="card">
-										<div style="height: 440px !important;" id="hourly-graph-container">
-												<canvas id="hourly_load_chart" style="background-color : black;"></canvas>
-										</div>
-								</div>
-						</div> 
-				</div> <!-- end of row -->
 
-				<div class="row mb-4 pb-5 border-bottom">
-						<div class="col-sm-5">
-								<div class="card">
-										<img class="card-img-top" src="static/landing/images/image2.png" alt="Card image cap">
-								</div>
-						</div> 
-						<div class="col-sm-7">
+						<div class="col-sm-6">
 								<h3 class="pl-4">Access via Web & Interactive 
 										Excel Interface</h3>
 										<ul class="text-black-50">
@@ -209,6 +195,32 @@
 												</li>
 										</ul>
 						</div> <!-- end of col -->
+				</div> <!-- end of row -->
+
+				<div class="row mb-4 pb-5 border-bottom">
+						<div class="col-sm-12">
+								<div class="card">
+										<div class="card-header" style="height: 55px !important;">
+											<div class="row align-items-center">
+												<div class="form-group col-md-3">
+														<select class="form-control" id="load_data_balancing_authority_1">
+															<option value="PJM">PJM</option>
+															<option value="CISO">CISO</option>
+															<option value="ERCO">ERCO</option>
+														</select>
+												 </div>
+												 <div class="col-md-2"></div>
+												<div class="col-md-5">
+													<p class="font-weight-bold">Last 24 Load Data Points </p>
+												</div>
+
+											</div>
+										</div>
+										<div style="height: 440px !important;" id="hourly-graph-container" class="card-body">
+												<canvas id="hourly_load_chart" style="background-color : #333333;"></canvas>
+										</div>
+								</div>
+						</div> 
 				</div> <!-- end of row -->
 
 				<div class="row mb-4 pb-5">
@@ -402,7 +414,7 @@
 		function hourly_load_chart_draw(obj){
 				// Remove graph and reload. because old graph is showing
 				$('#hourly_load_chart').remove(); // this is <canvas> element
-				$('#hourly-graph-container').append('<canvas id="hourly_load_chart" style="background-color : black;"><canvas>');
+				$('#hourly-graph-container').append('<canvas id="hourly_load_chart" style="background-color : #333333;"><canvas>');
 
 				var hourly_canvas = document.getElementById("hourly_load_chart");
 				var hourly_ctx = hourly_canvas.getContext('2d');
@@ -461,12 +473,12 @@
 						},
 						maintainAspectRatio: false,
 						chartArea: {
-											backgroundColor: 'black'
+											backgroundColor: '#333333'
 										},
 						scales: {
 											yAxes: [{
 													gridLines: {
-															color: ['white', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
+															color: ['white', '#333333']
 													},
 													ticks: {
 															beginAtZero:true,
@@ -482,7 +494,7 @@
 											}],
 											xAxes: [{
 													gridLines: {
-															color: ['white', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black']
+															color: ['white', '#333333']
 													},
 													ticks: {
 															beginAtZero:false,
@@ -541,9 +553,9 @@
 
 
 		// on change of ba change the houry graph
-		$("#load_data_balancing_authority").change(function(e) {
+		$("#load_data_balancing_authority_1").change(function(e) {
 			// get the required details
-			let ba_name = $('#load_data_balancing_authority').find(":selected").val();
+			let ba_name = $('#load_data_balancing_authority_1').find(":selected").val();
 
 			// convert this data into the object for passing to the server
 			let request_obj = [{"ba_name" : ba_name}];
