@@ -35,3 +35,32 @@ def get_generation_data_by_avg_with_date_range(data):
 		response["message"] = "Error while getting avg generation data ..."
 		return response
 
+# get the generation data for last 5 records
+def get_generation_data_latest_records(data):
+	response = {"status" : False, "message" : "", "data" : {}}
+	try:
+		# get the object data
+		ba_name = data['ba_name']
+
+		# select data query
+		data_list = []
+		select_query = "select date_format(`timestamp`, '%%Y-%%m-%%d %%H:%%m') as running_date, round(gen_MW, 2) as generation_data, ba_name from foreqast_generation_data group by ba_name, date_format(`timestamp`, '%%Y-%%m-%%d %%H:%%m') having ba_name = '{ba_name}' order by running_date desc limit 0, 24".format(ba_name = ba_name)
+
+		# execute the query
+		generation_result = app._engine.execute(select_query)
+
+		# check for the result
+		if generation_result.rowcount > 0:
+			for row in generation_result:
+				data_list.append(dict(row.items()))
+			response['status'] = True
+			response['data'] = data_list
+		else:
+			response['message'] = "For this filter, no data available ..."
+
+		# return common response
+		return response
+	except Exception as e:
+		print(str(e))
+		response["message"] = "Error while getting latest generation data ..."
+		return response
