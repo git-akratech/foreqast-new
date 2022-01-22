@@ -156,29 +156,41 @@
 								<p class="text-black-50">Hourly & Sub-Hourly load and price forecasts for up to 15 days out. Load forecasts include System-Wide, Regional, Zonal, and Balancing Authorities loads. Price forecasts are provided for a variety of price types such as Day-Ahead and Real-Time LMPs, Energy only prices, pool prices and FMM and HASP prices.</p>
 						</div> <!-- end of col -->
 						<div class="col-sm-7">
-								<div class="card">
-										<img class="card-img-top" src="static/landing/images/image 56.png" alt="Card image cap">
-								</div>
-						</div> 
-				</div> <!-- end of row -->
-				<div class="row mb-4 pb-5 border-bottom">
-						<div class="col-sm-7">
-								<div class="card">
-										<img class="card-img-top" src="static/landing/images/image 57.png" alt="Card image cap">
-								</div>
-						</div> 
-						<div class="col-sm-5">
 								<h3 class="pl-4">State of the Art Forecasting Process</h3>
-										<ul class="text-black-50">
-												<li>  Ensemble of Intelligent System Based Forecasting Models</li>
-												<li>  Weather data provided by four major weather data services</li>
-												<li>  Daily IM Commentary on Market Load Forecasts from a Meteorologist</li>
-												<li>  User Interaction with Forecasting Models (optional feature)</li>
-												<li>  Continuous quality control & monitoring</li>
-																
-													 
-										</ul>
-						</div> <!-- end of col -->
+								<ul class="text-black-50">
+										<li>  Ensemble of Intelligent System Based Forecasting Models</li>
+										<li>  Weather data provided by four major weather data services</li>
+										<li>  Daily IM Commentary on Market Load Forecasts from a Meteorologist</li>
+										<li>  User Interaction with Forecasting Models (optional feature)</li>
+										<li>  Continuous quality control & monitoring</li>	 
+								</ul>
+						</div>  <!-- end of col -->
+				</div> <!-- end of row -->
+
+				<div class="row mb-4 pb-5 border-bottom">
+						<div class="col-sm-12">
+								<div class="card">
+										<div class="card-header" style="height: 55px !important;">
+											<div class="row align-items-center">
+												<div class="form-group col-md-3">
+														<select class="form-control" id="load_trade_balancing_authority_1">
+															<option value="ERCO">ERCO</option>
+															<option value="PJM">PJM</option>
+															<option value="CISO">CISO</option>
+														</select>
+												 </div>
+												 <div class="col-md-2"></div>
+												<div class="col-md-5">
+													<p class="font-weight-bold">Last 24 Trade Data Points </p>
+												</div>
+
+											</div>
+										</div>
+										<div style="height: 440px !important;" id="hourly-graph-container-trade" class="card-body">
+											<canvas id="hourly_trade_chart" style="background-color : #333333;"></canvas>
+										</div>
+								</div>
+						</div> 
 				</div> <!-- end of row -->
 
 				<div class="row mb-4 pb-5 border-bottom ">
@@ -222,9 +234,7 @@
 										<li>Analysis tools for past performance & accuracy</li>
 										<li>Downloadable in a variety of file formats</li>
 										<li>User developed macros can be embedded</li>
-									 
 										</ul>
-
 								</ul>
 							 
 						</div> <!-- end of col -->
@@ -306,10 +316,15 @@
 
 			// get the initial request data from jinja2 to js
 			var data_obj = JSON.parse('{{ bar_graph_data | tojson }}');
-			console.log(data_obj)
 
 			// call avg load chart generator function
 			avg_load_chart_draw(data_obj);
+
+			// get the initial request hourly load data from jinja2 to js
+			var hourly_trade_data_obj = JSON.parse('{{ get_trade_data_latest_records_response | tojson }}');
+
+			// call hourly trade chart generator function
+			hourly_trade_chart_draw(hourly_trade_data_obj);
 
 			function avg_load_chart_draw(obj){
 					// Remove graph and reload. because old graph is showing
@@ -393,34 +408,173 @@
 
 			}
 
-				// on change of graph filter options
-				$("#load_data_balancing_authority, #load_data_from_date, #load_data_to_date").change(function(e) {
-					// get the required details
-					let ba_name = $('#load_data_balancing_authority').find(":selected").val();
-					let from_date = $("#load_data_from_date").val();
-					let to_date = $("#load_data_to_date").val();
+			// function for load hourly load chart
+			function hourly_trade_chart_draw(obj){
+					// Remove graph and reload. because old graph is showing
+					$('#hourly_trade_chart').remove(); // this is <canvas> element
+					$('#hourly-graph-container-trade').append('<canvas id="hourly_trade_chart" style="background-color : #333333;"><canvas>');
 
-					// convert this data into the object for passing to the server
-					let request_obj = [{"ba_name" : ba_name, "from_date" : from_date, "to_date" : to_date}];
+					var hourly_canvas = document.getElementById("hourly_trade_chart");
+					var hourly_ctx = hourly_canvas.getContext('2d');
 
-					// call to the ajax
-					$.ajax({
-								type: "POST",
-								url: "get_ba_wise_avg_trade_data_for_date_range",
-								data: JSON.stringify(request_obj),
-								contentType: "application/json; charset=utf-8",
-								dataType: "json",
-								success: function(response) {
-								 if(response['status']){
-									 	// call to the common method
-										avg_load_chart_draw(response);
-								 }else{
-									alert(response['message']);
-								 }
-								}
+					var initial_hourly_trade_chart_data = obj;
+					var hourly_trade_chart_lables = [];
+					var hourly_trade_chart_data = [];
+					var ba_name = "";
+
+					if(initial_hourly_trade_chart_data['status']){
+
+						// convert object into required data format
+						for (const [key, value] of Object.entries(initial_hourly_trade_chart_data.data)) {
+							hourly_trade_chart_lables.push(initial_hourly_trade_chart_data.data[key]['running_date']);
+							hourly_trade_chart_data.push(initial_hourly_trade_chart_data.data[key]['trade_data']);
+							ba_name = initial_hourly_trade_chart_data.data[key]['ba_name'];
+						}
+
+						Chart.pluginService.register({
+									beforeDraw: function (chart, easing) {
+										if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
+											var helpers = Chart.helpers;
+											var ctx = chart.chart.ctx;
+											var chartArea = chart.chartArea;
+
+											ctx.save();
+											ctx.fillStyle = chart.config.options.chartArea.backgroundColor;
+											ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+											ctx.restore();
+										}
+									}
+								});
+
+						// create chart data
+						var chart_data = {
+									labels: hourly_trade_chart_lables,
+									datasets: [{
+											label: ba_name + ' Trade',
+											fill: false,
+											backgroundColor: '#3333ff',
+											borderColor: '#3333ff',
+											borderWidth: 2,
+											data: hourly_trade_chart_data,
+										}
+
+									]
+								};
+
+						// create chart options
+						var chart_options = {
+							legend: {
+									labels: {
+											fontColor: "white",
+											fontSize: 15
+									}
+							},
+							maintainAspectRatio: false,
+							chartArea: {
+												backgroundColor: '#333333'
+											},
+							scales: {
+												yAxes: [{
+														gridLines: {
+																color: ['white', '#333333']
+														},
+														ticks: {
+																beginAtZero:false,
+																fontColor: "white"
+														},
+														scaleLabel: {
+																 display: true,
+																 labelString: 'Load (MW)',
+																 fontSize: 15,
+																 fontColor: 'white',
+																 fontStyle: 'bold',
+															},
+												}],
+												xAxes: [{
+														gridLines: {
+																color: ['white', '#333333']
+														},
+														ticks: {
+																beginAtZero:false,
+																fontColor: "white"
+														},
+														scaleLabel: {
+																 display: true,
+																 labelString: 'Timestamp',
+																 fontSize: 15,
+																 fontColor: 'white',
+																 fontStyle: 'bold',
+															},
+												}]
+											},
+						};
+
+						// generate chart
+						var hourly_chart = new Chart(hourly_ctx, {
+							type: 'line',
+							data: chart_data,
+							options: chart_options
 						});
 
-				});
+					}else{
+						alert("For this filter trade data not found ...");
+					}
+			}
+
+			// on change of graph filter options
+			$("#load_data_balancing_authority, #load_data_from_date, #load_data_to_date").change(function(e) {
+				// get the required details
+				let ba_name = $('#load_data_balancing_authority').find(":selected").val();
+				let from_date = $("#load_data_from_date").val();
+				let to_date = $("#load_data_to_date").val();
+
+				// convert this data into the object for passing to the server
+				let request_obj = [{"ba_name" : ba_name, "from_date" : from_date, "to_date" : to_date}];
+
+				// call to the ajax
+				$.ajax({
+							type: "POST",
+							url: "get_ba_wise_avg_trade_data_for_date_range",
+							data: JSON.stringify(request_obj),
+							contentType: "application/json; charset=utf-8",
+							dataType: "json",
+							success: function(response) {
+							 if(response['status']){
+								 	// call to the common method
+									avg_load_chart_draw(response);
+							 }else{
+								alert(response['message']);
+							 }
+							}
+					});
+			});
+
+			// on change of latest data graph point update the graph
+			$("#load_trade_balancing_authority_1").change(function(e) {
+				// get the required details
+				let ba_name = $('#load_trade_balancing_authority_1').find(":selected").val();
+
+				// convert this data into the object for passing to the server
+				let request_obj = [{"ba_name" : ba_name}];
+
+				// call to the ajax
+				$.ajax({
+							type: "POST",
+							url: "get_ba_wise_hourly_trade_data",
+							data: JSON.stringify(request_obj),
+							contentType: "application/json; charset=utf-8",
+							dataType: "json",
+							success: function(response) {
+							 if(response['status']){
+									// call to the common method
+									hourly_trade_chart_draw(response);
+							 }else{
+								alert(response['message']);
+							 }
+							}
+					});
+			});
+
 
 			});
 

@@ -28,3 +28,29 @@ def get_ba_wise_avg_trade_data_for_date_range():
 		print(str(e))
 		response["message"] = "Error while getting avg trade data ..."
 		return jsonify(response)
+
+# get the trade data for ba with latest data
+@app.route('/get_ba_wise_hourly_trade_data', methods = ['POST'])
+def get_ba_wise_hourly_trade_data():
+	response = {"status" : False, "message" : "", "data" : {}}
+	try:
+		# get the request data
+		data = request.get_json()[0]
+
+		# extract and validate the data
+		ba_name = data['ba_name']
+
+		# create request data object
+		request_data = {
+			"ba_name" : ba_name
+		}
+
+		#call to the common method
+		response = get_trade_data_latest_records(request_data)
+
+		# return the response
+		return jsonify(response)
+	except Exception as e:
+		print(str(e))
+		response["message"] = "Error while getting latest trade data ..."
+		return jsonify(response)

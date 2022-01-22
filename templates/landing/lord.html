@@ -217,7 +217,7 @@
 											</div>
 										</div>
 										<div style="height: 440px !important;" id="hourly-graph-container" class="card-body">
-												<canvas id="hourly_load_chart" style="background-color : #333333;"></canvas>
+											<canvas id="hourly_load_chart" style="background-color : #333333;"></canvas>
 										</div>
 								</div>
 						</div> 
@@ -327,7 +327,7 @@
 		// get the initial request hourly load data from jinja2 to js
 		var hourly_load_data_obj = JSON.parse('{{ get_load_data_latest_records_response | tojson }}');
 
-		// call avg load chart generator function
+		// call hourly load chart generator function
 		hourly_load_chart_draw(hourly_load_data_obj);
 
 		// function for load avg load chart

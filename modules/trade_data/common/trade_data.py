@@ -44,7 +44,7 @@ def get_trade_data_latest_records(data):
 
 		# select data query
 		data_list = []
-		select_query = "select date_format(`timestamp`, '%%Y-%%m-%%d %%H:%%m') as running_date, round(net_exp_MW, 2) as trade_data, ba_name from foreqast_trade_data group by ba_name, date_format(`timestamp`, '%%Y-%%m-%%d %%H:%%m') having ba_name = '{ba_name}' order by running_date desc limit 0, 10".format(ba_name = ba_name)
+		select_query = "select date_format(`timestamp`, '%%Y-%%m-%%d %%H:%%m') as running_date, round(net_exp_MW, 2) as trade_data, ba_name from foreqast_trade_data group by ba_name, date_format(`timestamp`, '%%Y-%%m-%%d %%H:%%m') having ba_name = '{ba_name}' order by running_date desc limit 0, 24".format(ba_name = ba_name)
 
 		# execute the query
 		trade_result = app._engine.execute(select_query)

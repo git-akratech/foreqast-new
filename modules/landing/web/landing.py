@@ -85,6 +85,7 @@ def foreqast_power_market():
 		data_response = get_trade_data_by_avg_with_date_range(data)
 
 		# get latest few hours records
+		data["ba_name"] = "ERCO"
 		get_trade_data_latest_records_response = get_trade_data_latest_records(data)
 		return render_template('/landing/power-market.html', bar_graph_data = data_response, get_trade_data_latest_records_response = get_trade_data_latest_records_response)
 	except Exception as e:
