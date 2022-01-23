@@ -24,3 +24,55 @@ def foreqast_sign_up_info(request_data):
 		print(str(e))
 		response["message"] = "Unable to create new account, please contact administrator ..."
 		return response
+
+# common method for login user
+def foreqast_login_info(data):
+	response = {
+		'status' : False,
+		'message' : ''
+	}
+	try:
+		# get the user by email ID
+		select_user_query = select([
+				db_table_foreqast_user.c.user_id,
+				db_table_foreqast_user.c.email_id,
+				db_table_foreqast_user.c.full_name,
+				db_table_foreqast_user.c.password.label('existing_hash_password')
+			]).select_from(
+				db_table_foreqast_user
+			).where(
+				db_table_foreqast_user.c.email_id == data['user_email']
+			)
+
+		# execute the query
+		select_query_result = app._engine.execute(select_user_query)
+		user_count = select_query_result.rowcount
+		if user_count == 0:
+			response['status'] = False
+			response['message'] = "This email is not registed into the system, please contact administrator ..."
+			return response	
+		if user_count == 1:
+			response['message'] = "Unique user found in the system, carry forward the login process ..."
+		elif user_count > 1:
+			response['status'] = False
+			response['message'] = "This email is registed multiple times in system, please contact administrator ..."
+			return response
+		else:
+			response['status'] = False
+			response['message'] = "No user found ..."
+			return response
+
+		# fetch the query result data
+		system_data = select_query_result.fetchone()
+
+		if sha256_crypt.verify(str(data['user_password']), system_data['existing_hash_password']):
+			response['status'] = True
+			response['data'] = system_data
+			response['message'] = "Successfully logged in ..."
+		else:
+			response['status'] = False
+			response['message'] = "Wrong password ..."
+	except Exception as e:
+		print(str(e))
+		response['message'] = "Error while getting user details, please contact administrator ..."
+	return response

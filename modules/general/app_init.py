@@ -5,6 +5,7 @@ from flask import Flask, render_template, url_for, redirect, request, jsonify, s
 
 # import ORM / DB related packages
 from sqlalchemy import create_engine, Table, MetaData, select, insert, update, delete, and_, or_, func
+from sqlalchemy.orm import sessionmaker
 
 # date time related packages
 from datetime import datetime, timedelta, date

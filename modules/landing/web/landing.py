@@ -9,10 +9,34 @@ def landing():
 		return 'OOPS !!!, failed to load the landing page ...'
 
 # Handle login page routing
-@app.route('/foreqast_login', methods = ['GET'])
+@app.route('/foreqast_login', methods = ['GET','POST'])
 def foreqast_login():
 	try:
-		return render_template('/landing/log-in.html')
+		if request.method == "GET":
+			return render_template('/landing/log-in.html')
+		elif request.method == "POST":
+			# get the request data and convert into the requred format
+			# get the request data
+			data = request.form.to_dict()
+
+			# pass to the common method
+			login_user_response = foreqast_login_info(data)
+			if login_user_response['status']:
+				# create a DB session connection
+				Session = sessionmaker(bind = app._engine)
+				application_session = Session()
+
+				# create a flask app session
+				session['logged_in'] = True
+				session['user_id'] = login_user_response['data']['user_id']
+				session['full_name'] = login_user_response['data']['full_name']
+				session['email_id'] = login_user_response['data']['email_id']
+
+				# on successful login create a user session and nevigate to the dashboard page
+				return jsonify({"message" : "You are successfully logged in, buzz is building up ..."})
+			else:
+				flash(login_user_response['message'], 'error')
+				return redirect(url_for('foreqast_login'))
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the login page ...'
