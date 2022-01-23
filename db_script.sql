@@ -1,3 +1,15 @@
+
+drop table if exists foreqast_user;
+CREATE TABLE `foreqast_user` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` VARCHAR(45) NOT NULL,
+  `full_name` VARCHAR(100) NOT NULL,
+  `email_id` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(500) NOT NULL,
+  `registered_on` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC));
+
 CREATE TABLE `foreqast_generation_data` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `ba_name` VARCHAR(45) NULL,

@@ -18,10 +18,39 @@ def foreqast_login():
 		return 'OOPS !!!, failed to load the login page ...'
 
 # handling signup page routing
-@app.route('/foreqast_sign_up', methods = ['GET'])
+@app.route('/foreqast_sign_up', methods = ['GET', 'POST'])
 def foreqast_sign_up():
 	try:
-		return render_template('/landing/sign-up.html')
+		if request.method == "GET":
+			return render_template('/landing/sign-up.html')
+		elif request.method == "POST":
+			# prepare data for adding new user into the system
+
+			# get teh request data and convert it into the dict
+			data = request.form.to_dict()
+
+			#prepare request data
+			request_data = {}
+
+			# generate hash password
+			hash_password = sha256_crypt.hash(str(data['user_password']))
+
+			# generate random user id
+			request_data['user_id'] = ''.join(choice(ascii_uppercase) for i in range(3)) + ''.join(choice(digits) for i in range(4))
+			request_data['full_name'] = str(data['user_name']).strip()
+			request_data['email_id'] = str(data['user_email']).strip()
+			request_data['password'] = hash_password
+			# mysql default date format
+			request_data['registered_on'] = datetime.now(timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M')
+
+			# pass request data object to the common method
+			response = foreqast_sign_up_info(request_data)
+			if response['status']:
+				flash(response["message"], "success")
+			else:
+				flash(response["message"], "error")
+
+			return redirect(url_for('foreqast_login'))
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the sign-up page ...'

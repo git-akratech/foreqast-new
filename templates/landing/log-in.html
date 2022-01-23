@@ -73,10 +73,10 @@
 												<a class="nav-link dropdown-toggle page-scroll" href="{{ url_for('landing', _anchor='header') }}#video" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">VIDEO</a>
 												<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 														<a class="dropdown-item" href="{{ url_for('foreqast_article_detail') }}"><span class="item-text">ARTICLE DETAILS</span></a>
-                            <div class="dropdown-items-divide-hr"></div>
-                            <a class="dropdown-item" href="{{ url_for('foreqast_terms_and_conditions') }}"><span class="item-text">TERMS CONDITIONS</span></a>
-                            <div class="dropdown-items-divide-hr"></div>
-                            <a class="dropdown-item" href="{{ url_for('foreqast_privacy_policy') }}"><span class="item-text">PRIVACY POLICY</span></a>
+														<div class="dropdown-items-divide-hr"></div>
+														<a class="dropdown-item" href="{{ url_for('foreqast_terms_and_conditions') }}"><span class="item-text">TERMS CONDITIONS</span></a>
+														<div class="dropdown-items-divide-hr"></div>
+														<a class="dropdown-item" href="{{ url_for('foreqast_privacy_policy') }}"><span class="item-text">PRIVACY POLICY</span></a>
 												</div>
 										</li> -->
 										<!-- end of dropdown menu -->
@@ -103,9 +103,23 @@
 										<img class="img-fluid" src="static/landing/images/logo.png" alt="alternative">
 										<!-- Sign Up Form -->
 										<div class="form-container">
+												<!-- check for the error message and raise the message as per category -->
+												{% with messages = get_flashed_messages(with_categories = true) %}
+												 {% if messages %}
+
+														{% for category, message in messages %}
+															{% if category  in ('success', 'error', 'warning')%}
+																 <div class="alert alert-info">
+																   {{ message }}
+																 </div>
+															{% endif %}
+
+														{% endfor %}
+												 {% endif %}
+												{% endwith %}
+
 												<h2>Login to Your Account</h2>
 												<form id="logInForm mt-2 "class="text-left" data-toggle="validator" data-focus="false">
-													 
 														<div class=" mb-3">
 																<label class="exampleInputEmail1 " for="lemail">Username</label>
 																<div class="input-group">
@@ -114,7 +128,7 @@
 																				<i class="fas fa-user"></i>
 																		</span>
 																	</div>
-																	<input type="text" class="form-control" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
+																	<input type="text" class="form-control" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required/>
 																	
 																</div>
 														<!-- <div class="form-group">
