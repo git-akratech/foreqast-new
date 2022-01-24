@@ -33,14 +33,21 @@ def foreqast_login():
 				session['email_id'] = login_user_response['data']['email_id']
 
 				# on successful login create a user session and nevigate to the dashboard page
-				#return jsonify({"message" : "You are successfully logged in, buzz is building up ..."})
-				return render_template('admin/index.html')
+				return  redirect(url_for('landing_login'))
 			else:
 				flash(login_user_response['message'], 'error')
 				return redirect(url_for('foreqast_login'))
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the login page ...'
+
+@app.route('/landing_login')
+def landing_login():
+	if session['logged_in'] == True:
+		return render_template('admin/index.html')
+	else:
+		flash("Your session is expired, please login again ...", 'error')
+		return redirect(url_for('foreqast_login'))
 
 # handling signup page routing
 @app.route('/foreqast_sign_up', methods = ['GET', 'POST'])
