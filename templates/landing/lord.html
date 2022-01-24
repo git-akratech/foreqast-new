@@ -18,7 +18,7 @@
 	<meta property="og:type" content="article" />
 
 		<!-- Website Title -->
-		<title>Article Details - Tivo - SaaS App HTML Landing Page Template</title>
+		<title>ForeQast - Load Foracsting</title>
 		
 		<!-- Styles -->
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap&subset=latin-ext" rel="stylesheet">
@@ -313,6 +313,10 @@
 		<script src="static/landing/js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
 		<script src="static/landing/js/validator.min.js"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
 		<script src="static/landing/js/scripts.js"></script> <!-- Custom scripts -->
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.bundle.js"></script>
 	 
 	 <!-- chart js graphs js here -->
 	 <script type="text/javascript">
@@ -423,16 +427,17 @@
 				var hourly_load_chart_lables = [];
 				var hourly_load_chart_data = [];
 				var ba_name = "";
-
+				var scatter_data = [];
 				if(initial_hourly_load_chart_data['status']){
-
+					console.log(initial_hourly_load_chart_data.data);
 					// convert object into required data format
 					for (const [key, value] of Object.entries(initial_hourly_load_chart_data.data)) {
 						hourly_load_chart_lables.push(initial_hourly_load_chart_data.data[key]['running_date']);
 						hourly_load_chart_data.push(initial_hourly_load_chart_data.data[key]['load_data']);
 						ba_name = initial_hourly_load_chart_data.data[key]['ba_name'];
+						scatter_data.push({'x' : new Date(initial_hourly_load_chart_data.data[key]['running_date']), 'y' : initial_hourly_load_chart_data.data[key]['load_data']});
 					}
-
+					console.log(scatter_data);
 					Chart.pluginService.register({
 								beforeDraw: function (chart, easing) {
 									if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
@@ -452,12 +457,12 @@
 					var chart_data = {
 								labels: hourly_load_chart_lables,
 								datasets: [{
-										label: ba_name + ' Load',
+										label: ba_name	 + ' Load',
 										fill: false,
-										backgroundColor: '#CA9FF9',
-										borderColor: '#CA9FF9',
-										borderWidth: 2,
-										data: hourly_load_chart_data,
+										backgroundColor: '#BC84F8',
+										borderColor: '#BC84F8',
+										borderWidth: 4,
+										data: scatter_data,
 									}
 
 								]
@@ -471,6 +476,14 @@
 										fontSize: 15
 								}
 						},
+						tooltips: {
+						   callbacks: {
+						      label: function(tooltipItem, data) {
+						         var label = data.labels[tooltipItem.index];
+						        return label + ' : Load = '+ tooltipItem.yLabel + ' MW';
+						      }
+						   }
+						},
 						maintainAspectRatio: false,
 						chartArea: {
 											backgroundColor: '#333333'
@@ -481,7 +494,7 @@
 															color: ['white', '#333333']
 													},
 													ticks: {
-															beginAtZero:true,
+															beginAtZero:false,
 															fontColor: "white"
 													},
 													scaleLabel: {
@@ -493,6 +506,22 @@
 														},
 											}],
 											xAxes: [{
+													type: 'time',
+						              time: {
+						                displayFormats: {
+						                  'millisecond': 'MMM DD',
+						                  'second': 'YYYY-MMM-DD hh:ss A',
+						                  'minute': 'MMM DD',
+						                  'hour': 'MMM DD',
+						                  'day': 'MMM DD',
+						                  'week': 'MMM DD',
+						                  'month': 'MMM DD',
+						                  'quarter': 'MMM DD',
+						                  'year': 'MMM DD',
+						                },
+						                round: 'second',
+						                unit: 'second',
+						              },
 													gridLines: {
 															color: ['white', '#333333']
 													},
@@ -513,7 +542,7 @@
 
 					// generate chart
 					var hourly_chart = new Chart(hourly_ctx, {
-						type: 'bar',
+						type: 'scatter',
 						data: chart_data,
 						options: chart_options
 					});
