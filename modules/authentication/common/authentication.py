@@ -76,3 +76,37 @@ def foreqast_login_info(data):
 		print(str(e))
 		response['message'] = "Error while getting user details, please contact administrator ..."
 	return response
+
+
+# common method for getting all userd from the system
+def foreqast_get_user_list_info():
+	response = {
+		'status' : False,
+		'message' : '',
+		'data' : []
+	}
+	try:
+		# get the user by email ID
+		select_user_query = select([
+				db_table_foreqast_user.c.user_id,
+				db_table_foreqast_user.c.email_id,
+				db_table_foreqast_user.c.full_name,
+			]).select_from(
+				db_table_foreqast_user
+			)
+
+		# execute the query
+		select_query_result = app._engine.execute(select_user_query)
+		user_list = []
+		for row in select_query_result:
+			user_list.append(dict(row.items()))
+
+		response['data'] = user_list
+		response['message'] = "Successfully retrieved user list .."
+		response['status'] = True
+		return response
+	except Exception as e:
+		print(str(e))
+		response['message'] = "Error while getting user list, please contact administrator ..."
+	return response
+
