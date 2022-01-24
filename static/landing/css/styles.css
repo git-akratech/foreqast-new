@@ -802,7 +802,7 @@ input[type='checkbox'] {
     background-position: top;
     position: relative;	
 }
-header#header:before {
+header#header.hero_img:before {
     content: "";
     width: 100%;
     background: #00000075;
