@@ -33,7 +33,8 @@ def foreqast_login():
 				session['email_id'] = login_user_response['data']['email_id']
 
 				# on successful login create a user session and nevigate to the dashboard page
-				return jsonify({"message" : "You are successfully logged in, buzz is building up ..."})
+				#return jsonify({"message" : "You are successfully logged in, buzz is building up ..."})
+				return render_template('admin/index.html')
 			else:
 				flash(login_user_response['message'], 'error')
 				return redirect(url_for('foreqast_login'))
