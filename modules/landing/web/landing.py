@@ -128,6 +128,7 @@ def foreqast_load():
 		data_response = get_load_data_by_avg_with_date_range(data)
 
 		# get ba wise latest records
+		data['ba_name'] = "CISO"
 		get_load_data_latest_records_response = get_load_data_latest_records(data)
 		return render_template('/landing/lord.html', bar_graph_data = data_response, get_load_data_latest_records_response = get_load_data_latest_records_response)
 	except Exception as e:

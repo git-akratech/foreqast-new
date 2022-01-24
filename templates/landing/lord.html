@@ -204,8 +204,8 @@
 											<div class="row align-items-center">
 												<div class="form-group col-md-3">
 														<select class="form-control" id="load_data_balancing_authority_1">
-															<option value="PJM">PJM</option>
 															<option value="CISO">CISO</option>
+															<option value="PJM">PJM</option>
 															<option value="ERCO">ERCO</option>
 														</select>
 												 </div>
@@ -429,7 +429,6 @@
 				var ba_name = "";
 				var scatter_data = [];
 				if(initial_hourly_load_chart_data['status']){
-					console.log(initial_hourly_load_chart_data.data);
 					// convert object into required data format
 					for (const [key, value] of Object.entries(initial_hourly_load_chart_data.data)) {
 						hourly_load_chart_lables.push(initial_hourly_load_chart_data.data[key]['running_date']);
@@ -437,7 +436,7 @@
 						ba_name = initial_hourly_load_chart_data.data[key]['ba_name'];
 						scatter_data.push({'x' : new Date(initial_hourly_load_chart_data.data[key]['running_date']), 'y' : initial_hourly_load_chart_data.data[key]['load_data']});
 					}
-					console.log(scatter_data);
+
 					Chart.pluginService.register({
 								beforeDraw: function (chart, easing) {
 									if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
