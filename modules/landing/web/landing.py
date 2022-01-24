@@ -43,11 +43,11 @@ def foreqast_login():
 
 @app.route('/landing_login')
 def landing_login():
-	if session['logged_in'] == True:
+	if 'logged_in' in session and session['logged_in'] == True:
 		user_list = foreqast_get_user_list_info()['data']
 		return render_template('admin/users.html', user_list = user_list)
 	else:
-		flash("Your session is expired, please login again ...", 'error')
+		flash("Your session had been expired, please login again ...", 'error')
 		return redirect(url_for('foreqast_login'))
 
 # handling signup page routing
@@ -172,3 +172,16 @@ def foreqast_price():
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the product - price page ...'
+
+@app.route('/foreqast_user_logout')
+def foreqast_user_logout():
+	try:
+		# clear all session vaiable
+		session['logged_in'] = False
+		session.clear()
+		flash("Successfully logged out ...", "success")
+		return redirect(url_for('foreqast_login'))
+	except Exception as e:
+		print(str(e))
+		flash("Falied to logout, please contact administrator ...", "error")
+		return redirect(url_for('foreqast_login'))
