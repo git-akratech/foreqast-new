@@ -1,5 +1,5 @@
-<?php include "header.php"; ?>
- <?php include "sidebar.php"; ?>
+{% include 'admin/header.html' %}
+{% include 'admin/sidebar.html' %}
 
   <main id="main" class="main">
 
@@ -7,7 +7,7 @@
       <h1>Users</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="{{ url_for('landing_login') }}">Home</a></li>
           <li class="breadcrumb-item">Users</li>
         </ol>
       </nav>
@@ -25,7 +25,7 @@
             </div>
             <div class="ps-3">
                 <h3>Kevin Mcleod</h3>
-                <span class="small pt-1 fw-bold">USA</span><img src="assets/img/usa.png" alt="usa" class="ps-2" />
+                <span class="small pt-1 fw-bold">USA</span><img src="static/admin/assets/img/usa.png" alt="usa" class="ps-2" />
             </div>
           </div>
          </div>
@@ -40,7 +40,7 @@
             </div>
             <div class="ps-3">
                 <h3>Kevin Mcleod</h3>
-                <span class="small pt-1 fw-bold">USA</span><img src="assets/img/usa.png" alt="usa" class="ps-2" />
+                <span class="small pt-1 fw-bold">USA</span><img src="static/admin/assets/img/usa.png" alt="usa" class="ps-2" />
             </div>
           </div>
          </div>
@@ -55,7 +55,7 @@
             </div>
             <div class="ps-3">
                 <h3>Kevin Mcleod</h3>
-                <span class="small pt-1 fw-bold">USA</span><img src="assets/img/usa.png" alt="usa" class="ps-2" />
+                <span class="small pt-1 fw-bold">USA</span><img src="static/admin/assets/img/usa.png" alt="usa" class="ps-2" />
             </div>
           </div>
          </div>
@@ -70,7 +70,7 @@
             </div>
             <div class="ps-3">
                 <h3>Kevin Mcleod</h3>
-                <span class="small pt-1 fw-bold">USA</span><img src="assets/img/usa.png" alt="usa" class="ps-2" />
+                <span class="small pt-1 fw-bold">USA</span><img src="static/admin/assets/img/usa.png" alt="usa" class="ps-2" />
             </div>
           </div>
          </div>
@@ -85,7 +85,7 @@
             </div>
             <div class="ps-3">
                 <h3>Kevin Mcleod</h3>
-                <span class="small pt-1 fw-bold">USA</span><img src="assets/img/usa.png" alt="usa" class="ps-2" />
+                <span class="small pt-1 fw-bold">USA</span><img src="static/admin/assets/img/usa.png" alt="usa" class="ps-2" />
             </div>
           </div>
          </div>
@@ -100,7 +100,7 @@
             </div>
             <div class="ps-3">
                 <h3>Kevin Mcleod</h3>
-                <span class="small pt-1 fw-bold">USA</span><img src="assets/img/usa.png" alt="usa" class="ps-2" />
+                <span class="small pt-1 fw-bold">USA</span><img src="static/admin/assets/img/usa.png" alt="usa" class="ps-2" />
             </div>
           </div>
          </div>
@@ -115,17 +115,15 @@
             </div>
             <div class="ps-3">
                 <h3>Kevin Mcleod</h3>
-                <span class="small pt-1 fw-bold">USA</span><img src="assets/img/usa.png" alt="usa" class="ps-2" />
+                <span class="small pt-1 fw-bold">USA</span><img src="static/admin/assets/img/usa.png" alt="usa" class="ps-2" />
             </div>
           </div>
          </div>
         </div>
-       </div><!-- End Customers Card -->
-
-       
+       </div><!-- End Customers Card -->       
       </div>
     </section>
 
   </main><!-- End #main -->
 
-<?php include "footer.php"; ?>
+{% include 'admin/footer.html' %}
