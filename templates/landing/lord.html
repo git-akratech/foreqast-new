@@ -191,48 +191,10 @@
 								</div>
 						</div> 
 				</div> <!-- end of row -->
-				<div class="row mb-4 pb-5">
-						<div class="col-sm-4">
-								<div class="card mt-5" style="min-height: 10rem;">
-										<i>
-										<img  src="static/landing/images/group.png" alt="Card image cap">
-										</i>
-										<div class="card-body">
-												<a href="{{ url_for('foreqast_load') }}">
-											<h3 class="card-title text-center font-weight-light">Load Forecasting</h3>
-											<p class="text-center blue">
-												e-LoadForecast</p></a>
-										</div>
-								</div>
-						</div>
-						<div class="col-sm-4">
-								<div class="card mt-5" style="min-height: 10rem;">
-										<i>
-										<img class="" src="static/landing/images/Group-2.png" alt="Card image cap">
-										</i>
-										<div class="card-body">
-												<a href="{{ url_for('foreqast_power_market') }}">
-											<h3 class="card-title text-center  font-weight-light">Power Markets</h3>
-											<p class="text-center blue">e-ISOForecast® / e-PowerForecast®</p>
-												</a>
-										</div>
-								</div>
-						</div>
-						<div class="col-sm-4">
-								<div class="card mt-5" style="min-height: 10rem;">
-										<i>
-										<img  src="static/landing/images/Group-1.png" alt="Card image cap">
-										</i>
-										<div class="card-body">
 
-												<a href="{{ url_for('foreqast_price') }}">
-											<h3 class="card-title text-center font-weight-light">Price Forecasting</h3>
-											<p class="text-center blue">e-PF™</p>
-											</a>
-										</div>
-								</div>
-						</div>
-				</div>
+				<!-- include products -->
+				{% include 'landing/products.html' %}
+				
 		</div> <!-- end of text-container -->
 
 
