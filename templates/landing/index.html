@@ -101,6 +101,9 @@
 																<select class="form-control" id="load_data_chart_type">
 																	<option value="line">Line</option>
 																	<option value="bar">Bar</option>
+																	<option value="scatter">Scatter</option>
+																	<option value="pie">Pie</option>
+																	<option value="doughnut">Doughnut</option>
 																</select>
 														 </div>
 
@@ -174,10 +177,10 @@
 					 <div class="col-sm-12 mt-lg-5">
 							<div class="row ">
 								<div class="col-sm-3 mt-5">
-									  <div class="card mt-5 ">
-										   <div class="img-wrapper">
-										       <img  class="img"src="static/landing/images/Ellipse 8.png" alt="Card image cap">
-									     	</div>
+										<div class="card mt-5 ">
+											 <div class="img-wrapper">
+													 <img  class="img"src="static/landing/images/Ellipse 8.png" alt="Card image cap">
+												</div>
 											<div class="card-body">
 													<p class="card-title">Aida Ahmadzadegan</p>
 													<strong>CTO</strong>
@@ -189,9 +192,9 @@
 									</div>
 								<div class="col-sm-3 mt-5">
 										<div class="card mt-5">
-											  <div class="img-wrapper">
+												<div class="img-wrapper">
 												<img  class="img"src="static/landing/images/Ellipse 9.png" alt="Card image cap">
-										      </div>
+													</div>
 												<div class="card-body">
 													<p class="card-title text-md">Chris Masternak</p>
 													<strong>CEO</strong>
@@ -207,7 +210,7 @@
 											 </div>	
 											 <div class="card-body">
 													<p class="card-title text-md">Matthew Bishara</p>
-												 	<p class="text-center blue">Advanced Computing
+													<p class="text-center blue">Advanced Computing
 														Advisor</p>
 											 </div>
 										</div>
@@ -497,6 +500,8 @@
 					var avg_load_chart_lables = [];
 					var avg_load_chart_data = [];
 					var ba_name = "";
+					// added new variable for scatter chart
+					var scatter_data = [];
 
 					if(initial_avg_load_chart_data['status']){
 
@@ -505,8 +510,10 @@
 							avg_load_chart_lables.push(initial_avg_load_chart_data.data[key]['running_date']);
 							avg_load_chart_data.push(initial_avg_load_chart_data.data[key]['load_data']);
 							ba_name = initial_avg_load_chart_data.data[key]['ba_name'];
+							// converted data in  x and y axis for ploting scatter data
+							scatter_data.push({'x' : new Date(initial_avg_load_chart_data.data[key]['running_date']), 'y' : initial_avg_load_chart_data.data[key]['load_data']});
 						}
-
+						avg_load_chart_data_final = chart_type == "scatter" ? scatter_data : avg_load_chart_data;
 						// create chart data
 						var chart_data = {
 									labels: avg_load_chart_lables,
@@ -517,7 +524,7 @@
 											backgroundColor: '#a2d4f6',
 											borderColor: '#1277ba',
 											borderWidth: 2,
-											data: avg_load_chart_data,
+											data: avg_load_chart_data_final,
 										}
 
 									]
@@ -539,6 +546,22 @@
 															},
 												}],
 												xAxes: [{
+														type: 'time',
+														time: {
+															displayFormats: {
+																'millisecond': 'MMM DD',
+																'second': 'YYYY-MMM-DD hh:ss A',
+																'minute': 'MMM DD',
+																'hour': 'MMM DD',
+																'day': 'YYYY-MM-DD',
+																'week': 'MMM DD',
+																'month': 'MMM DD',
+																'quarter': 'MMM DD',
+																'year': 'MMM DD',
+															},
+															round: 'day',
+															unit: 'day',
+														},
 														ticks: {
 																beginAtZero:false
 														},
