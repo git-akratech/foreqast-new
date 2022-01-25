@@ -3,7 +3,14 @@
 @app.route('/', methods = ['GET'])
 def landing():
 	try:
-		return render_template('/landing/index.html')
+		# get initial load data from loading the graph
+		data = {
+			"from_date" : "2021-12-22",
+			"to_date" : "2022-01-10",
+			"ba_name" : "PJM"
+		}
+		data_response = get_load_data_by_avg_with_date_range(data)
+		return render_template('/landing/index.html', bar_graph_data = data_response)
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the landing page ...'

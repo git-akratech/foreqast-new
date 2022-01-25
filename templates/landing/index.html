@@ -61,38 +61,59 @@
 								<div class="col-lg-12">
 										<h2 class="h2-heading">Our forecasts are 25% more accurate than existing predictions from ISOs</h2>
 										<h5> Partner with ForeQast to improve risk management and increase your 
-												bottom line every quarter.</h3>
+												bottom line every quarter.</h5>
 								</div> <!-- end of col -->
 						</div> <!-- end of row -->
 				</div> 
 		</div>
-		<div id="features" class="tabs">
+		<div id="features">
 				<div class="container">
-										<h2 class="h2-heading">Price, Load and Renewable Analytics Delivered Twice Daily</h2>
-						<div class="row">
-								<div class="col-lg-12 mt-4" >
-										<div class="tab-content" id="argoTabsContent">
-												<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab-1">
-														<div class="row">
-																<div class="col-lg-6">
-																		<div class="image-container mt-4">
-																				<img class="img-fluid" src="static/landing/images/features-1.png" alt="alternative">
-																		</div> <!-- end of image-container -->
-																</div> <!-- end of col -->
-																<div class="col-lg-6">
-																		<div class="text-container">
-																				<h2>Cutting Edge Deep - Learning Technology</h2>
-																				<p >After 25 years of producing trusted machine-learning forecasts, we’ve got this down to an art. Now, we’re improving MAPEs with more granular data and stronger computer power with our deep-learning technology.</p>
-																			 
-																				<a class="btn-solid-reg page-scroll" href="{{ url_for('foreqast_sign_up') }}">SIGN UP</a>
-																		</div> <!-- end of text-container -->
-																</div> <!-- end of col -->
-														</div> <!-- end of row -->
-												</div> <!-- end of tab-pane -->
-												
-										</div> <!-- end of tab content -->
-										<!-- end of tabs content -->
+						<h2 class="h2-heading">Price, Load and Renewable Analytics Delivered Twice Daily</h2>
+						<div class="row" style="margin-top: 20px;">
+								<div class="col-lg-12">
+										<!-- chart js graph here -->
+										<!-- graph row start -->
+											<div class="border rounded shadow">
+												<form>
+													<div class="row align-items-center" style="margin-top: 10px !important">
+														<div class="form-group col-md-1"></div>
+														<div class="form-group col-md-2">
+																<label for="load_data_balancing_authority" class="font-weight-bold">Select Bal. Auth.</label>
+																<select class="form-control" id="load_data_balancing_authority">
+																	<option value="PJM">PJM</option>
+																	<option value="CISO">CISO</option>
+																	<option value="ERCO">ERCO</option>
+																</select>
+														 </div>
 
+														 <div class="form-group col-md-3">
+																<label for="load_data_from_date" class="font-weight-bold">From Date</label>
+																<input type="date" class="form-control" id="load_data_from_date" name="load_data_from_date" value="2021-12-22" />
+														 </div>
+
+															<div class="form-group col-md-3">
+																<label for="load_data_to_date" class="font-weight-bold">To Date</label>
+																<input type="date" class="form-control" id="load_data_to_date" name="load_data_to_date" value="2022-01-10" />
+															</div>
+
+															<div class="form-group col-md-2">
+																<label for="load_data_balancing_authority" class="font-weight-bold">Chart Type</label>
+																<select class="form-control" id="load_data_chart_type">
+																	<option value="line">Line</option>
+																	<option value="bar">Bar</option>
+																</select>
+														 </div>
+
+														</div>
+												</form>
+
+												<div class="row">
+														<div class="col-md-12" style="height: 400px !important;" id="graph-container">
+																<canvas id="avg_load_chart"></canvas>
+														</div>
+												</div>
+											</div>
+											<!-- graph row end -->
 								</div> <!-- end of col -->
 						</div> <!-- end of row -->
 				</div> <!-- end of container -->
@@ -446,5 +467,132 @@
 		<script src="static/landing/js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
 		<script src="static/landing/js/validator.min.js"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
 		<script src="static/landing/js/scripts.js"></script> <!-- Custom scripts -->
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.bundle.js"></script>
+	 
+	 <!-- chart js graphs js here -->
+	 <script type="text/javascript">
+		$(document).ready(function(e) {
+
+			// get the initial request avg load data from jinja2 to js
+			var avg_load_data_obj = JSON.parse('{{ bar_graph_data | tojson }}');
+
+			// call avg load chart generator function
+			avg_load_chart_draw(avg_load_data_obj);
+
+			// function for load avg load chart
+			function avg_load_chart_draw(obj){
+					// Remove graph and reload. because old graph is showing
+					$('#avg_load_chart').remove(); // this is <canvas> element
+					$('#graph-container').append('<canvas id="avg_load_chart"><canvas>');
+
+					var canvas = document.getElementById("avg_load_chart");
+					var ctx = canvas.getContext('2d');
+
+					let chart_type = $('#load_data_chart_type').find(":selected").val();
+
+					var initial_avg_load_chart_data = obj;
+					var avg_load_chart_lables = [];
+					var avg_load_chart_data = [];
+					var ba_name = "";
+
+					if(initial_avg_load_chart_data['status']){
+
+						// convert object into required data format
+						for (const [key, value] of Object.entries(initial_avg_load_chart_data.data)) {
+							avg_load_chart_lables.push(initial_avg_load_chart_data.data[key]['running_date']);
+							avg_load_chart_data.push(initial_avg_load_chart_data.data[key]['load_data']);
+							ba_name = initial_avg_load_chart_data.data[key]['ba_name'];
+						}
+
+						// create chart data
+						var chart_data = {
+									labels: avg_load_chart_lables,
+									datasets: [{
+											label: ba_name + ' Load',
+											fill: false,
+											lineTension: 0.3,
+											backgroundColor: '#a2d4f6',
+											borderColor: '#1277ba',
+											borderWidth: 2,
+											data: avg_load_chart_data,
+										}
+
+									]
+								};
+
+						// create chart options
+						var chart_options = {
+							maintainAspectRatio: false,
+							scales: {
+												yAxes: [{
+														ticks: {
+																beginAtZero:false
+														},
+														scaleLabel: {
+																 display: true,
+																 labelString: 'Load (MW)',
+																 fontSize: 18,
+																 fontStyle: 'bold',
+															},
+												}],
+												xAxes: [{
+														ticks: {
+																beginAtZero:false
+														},
+														scaleLabel: {
+																 display: true,
+																 labelString: 'Timestamp',
+																 fontSize: 18,
+																 fontStyle: 'bold',
+															},
+												}]
+											},
+						};
+
+						// generate chart
+						var line_chart = new Chart(ctx, {
+							type: chart_type,
+							data: chart_data,
+							options: chart_options
+						});
+
+					}else{
+						alert("For this filter load data not found ...");
+					}
+			}
+
+			// on change of graph filter options
+			$("#load_data_balancing_authority, #load_data_from_date, #load_data_to_date, #load_data_chart_type").change(function(e) {
+				// get the required details
+				let ba_name = $('#load_data_balancing_authority').find(":selected").val();
+				let from_date = $("#load_data_from_date").val();
+				let to_date = $("#load_data_to_date").val();
+
+				// convert this data into the object for passing to the server
+				let request_obj = [{"ba_name" : ba_name, "from_date" : from_date, "to_date" : to_date}];
+
+				// call to the ajax
+				$.ajax({
+							type: "POST",
+							url: "get_ba_wise_avg_load_data_for_date_range",
+							data: JSON.stringify(request_obj),
+							contentType: "application/json; charset=utf-8",
+							dataType: "json",
+							success: function(response) {
+							 if(response['status']){
+									// call to the common method
+									avg_load_chart_draw(response);
+							 }else{
+								alert(response['message']);
+							 }
+							}
+					});
+			});
+		});
+	</script>
+
 </body>
 </html>
