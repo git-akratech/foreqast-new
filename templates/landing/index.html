@@ -33,49 +33,8 @@
 </head>
 <body data-spy="scroll" data-target=".fixed-top">
 		
-		<!-- Preloader -->
-	<div class="spinner-wrapper">
-				<div class="spinner">
-						<div class="bounce1"></div>
-						<div class="bounce2"></div>
-						<div class="bounce3"></div>
-				</div>
-		</div>
-
-		<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-				<div class="container">
-						<a class="navbar-brand logo-image" href="{{ url_for('landing') }}"><img src="static/landing/images/biglogo.svg" style=""alt="alternative"></a> 
-						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-								<span class="navbar-toggler-awesome fas fa-bars"></span>
-								<span class="navbar-toggler-awesome fas fa-times"></span>
-						</button>
-						<div class="collapse navbar-collapse" id="navbarsExampleDefault">
-								<ul class="navbar-nav ml-auto">
-										<li class="nav-item">
-												<a class="nav-link page-scroll" href="#header">HOME <span class="sr-only">(current)</span></a>
-										</li>
-										<li class="nav-item">
-												<a class="nav-link page-scroll" href="#features">FEATURES</a>
-										</li>
-										<li class="nav-item">
-												<a class="nav-link page-scroll" href="#details">PRODUCTS</a>
-										</li>
-										<li class="nav-item">
-												<a class="nav-link page-scroll" href="#video">ABOUT</a>
-										</li>
-										<li class="nav-item">
-												<a class="nav-link page-scroll" href="#pricing">CONTACT</a>
-										</li>
-								</ul>
-								<span class="nav-item">
-										<a class="btn-outline-sm" href="{{ url_for('foreqast_login') }}">LOG IN</a>
-								</span>
-								<span class="nav-item">
-										<a class="btn-outline-sm" href="{{ url_for('foreqast_sign_up') }}">SIGN IN</a>
-								</span>
-						</div>
-				</div> <!-- end of container -->
-		</nav>
+		<!-- include header -->
+		{% include 'landing/header.html' %}
 
 		<header id="header" class="header hero_img">
 				<div class="header-content">

@@ -32,75 +32,16 @@
 		<link rel="icon" href="static/landing/images/favicon.png">
 </head>
 <body data-spy="scroll" data-target=".fixed-top">
-		<div class="spinner-wrapper">
-				<div class="spinner">
-						<div class="bounce1"></div>
-						<div class="bounce2"></div>
-						<div class="bounce3"></div>
-				</div>
-		</div>
-
-		<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-				<div class="container">
-
-						<!-- Image Logo -->
-						<a class="navbar-brand logo-image" href="{{ url_for('landing') }}"><img src="static/landing/images/logo.svg" alt="alternative"></a> 
-						
-						<!-- Mobile Menu Toggle Button -->
-						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-								<span class="navbar-toggler-awesome fas fa-bars"></span>
-								<span class="navbar-toggler-awesome fas fa-times"></span>
-						</button>
-						<!-- end of mobile menu toggle button -->
-
-						<div class="collapse navbar-collapse" id="navbarsExampleDefault">
-								<ul class="navbar-nav ml-auto">
-										<li class="nav-item">
-												<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='header') }}">HOME <span class="sr-only">(current)</span></a>
-										</li>
-										<li class="nav-item">
-												<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='features') }}">FEATURES</a>
-										</li>
-										<li class="nav-item">
-												<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='details') }}">PRODUCTS</a>
-										</li>
-										<li class="nav-item">
-											<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='video') }}">ABOUT</a>
-										</li>
-
-										<!-- Dropdown Menu -->          
-										<!-- <li class="nav-item dropdown">
-												<a class="nav-link dropdown-toggle page-scroll" href="{{ url_for('landing', _anchor='header') }}#video" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">VIDEO</a>
-												<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-														<a class="dropdown-item" href="{{ url_for('foreqast_article_detail') }}"><span class="item-text">ARTICLE DETAILS</span></a>
-														<div class="dropdown-items-divide-hr"></div>
-														<a class="dropdown-item" href="{{ url_for('foreqast_terms_and_conditions') }}"><span class="item-text">TERMS CONDITIONS</span></a>
-														<div class="dropdown-items-divide-hr"></div>
-														<a class="dropdown-item" href="{{ url_for('foreqast_privacy_policy') }}"><span class="item-text">PRIVACY POLICY</span></a>
-												</div>
-										</li> -->
-										<!-- end of dropdown menu -->
-
-										<li class="nav-item">
-												<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='pricing') }}">PRICING</a>
-										</li>
-								</ul>
-								<!-- <span class="nav-item">
-										<a class="btn-outline-sm" href="{{ url_for('foreqast_login') }}">LOG IN</a>
-								</span> -->
-								<span class="nav-item">
-										<a class="btn-outline-sm" href="{{ url_for('foreqast_sign_up') }}">SIGN IN</a>
-								</span>
-						</div>
-				</div> <!-- end of container -->
-		</nav>
+	
+	<!-- include header -->
+	{% include 'landing/header.html' %}
 
 		<!-- Header -->
-		<header id="header" class="ex-2-header">
+		<header id="header" class="ex-2-header" style="min-height: 60vh !important;">
 				<div class="container">
 						<div class="row">
 								<div class="col-lg-12">
-										<img class="img-fluid" src="static/landing/images/logo.png" alt="alternative" />
+										<!-- <img class="img-fluid" src="static/landing/images/logo.png" alt="alternative" /> -->
 										<!-- Sign Up Form -->
 										<div class="form-container">
 												<!-- check for the error message and raise the message as per category -->
@@ -118,7 +59,7 @@
 												 {% endif %}
 												{% endwith %}
 
-												<h2>Login to Your Account</h2>
+												<h4>Login to Your Account</h4>
 												<form id="logInForm mt-2 "class="text-left" data-toggle="validator" data-focus="false" method="POST" action="foreqast_login">
 															<div class="form-group">
 																<label class="exampleInputEmail1" for="user_email">Email</label>

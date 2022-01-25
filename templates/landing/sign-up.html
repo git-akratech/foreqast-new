@@ -33,73 +33,17 @@
 </head>
 <body data-spy="scroll" data-target=".fixed-top">
 				
-				<!-- Preloader -->
-	<div class="spinner-wrapper">
-								<div class="spinner">
-												<div class="bounce1"></div>
-												<div class="bounce2"></div>
-												<div class="bounce3"></div>
-								</div>
-				</div>
-				<!-- end of preloader -->
-				
-
-				<!-- Navigation -->
-				<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-								<div class="container">
-
-												<!-- Text Logo - Use this if you don't have a graphic logo -->
-												<!-- <a class="navbar-brand logo-text page-scroll" href="{{ url_for('landing') }}">Tivo</a> -->
-
-												<!-- Image Logo -->
-												<a class="navbar-brand logo-image" href="{{ url_for('landing') }}"><img src="static/landing/images/logo.svg" alt="alternative"></a> 
-												
-												<!-- Mobile Menu Toggle Button -->
-												<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-																<span class="navbar-toggler-awesome fas fa-bars"></span>
-																<span class="navbar-toggler-awesome fas fa-times"></span>
-												</button>
-												<!-- end of mobile menu toggle button -->
-
-												<div class="collapse navbar-collapse" id="navbarsExampleDefault">
-																<ul class="navbar-nav ml-auto">
-																				<li class="nav-item">
-																								<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='header') }}">HOME <span class="sr-only">(current)</span></a>
-																				</li>
-																				<li class="nav-item">
-																								<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor='features') }}">FEATURES</a>
-																				</li>
-																				<li class="nav-item">
-																								<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor = 'details') }}">DETAILS</a>
-																				</li>
-																				<li class="nav-item">
-																								<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor = 'video') }}">ABOUT</a>
-																				</li>
-																				<li class="nav-item">
-																								<a class="nav-link page-scroll" href="{{ url_for('landing', _anchor = 'pricing') }}">CONTACT</a>
-																				</li>
-																				<!-- Dropdown Menu -->
-																		
-																				<!-- end of dropdown menu -->
-																</ul>
-																<span class="nav-item">
-																				<a class="btn-outline-sm" href="{{ url_for('foreqast_login') }}">LOG IN</a>
-																</span>
-																<span class="nav-item">
-																				<a class="btn-outline-sm" href="{{ url_for('foreqast_sign_up') }}">SIGN IN</a>
-																</span>
-												</div>
-								</div> 
-				</nav> 
+		<!-- include header -->
+		{% include 'landing/header.html' %}
 
 				<!-- Header -->
-				<header id="header" class="ex-2-header pt-4">
+				<header id="header" class="ex-2-header" style="min-height: 85vh !important;">
 								<div class="container">
 												<div class="row">
 																<div class="col-lg-12">
-																				<img class="img-fluid" src="static/landing/images/logo.png" alt="alternative">
+																				<!-- <img class="img-fluid" src="static/landing/images/logo.png" alt="alternative"> -->
 																				<div class="form-container">
-																								<h2>Create an Account</h2>
+																								<h4>Create an Account</h4>
 																								<form id="logInForm mt-2 "class="text-left" data-toggle="validator" data-focus="false" method="POST" action="foreqast_sign_up">
 																												<div class="form-group">
 																																<label class="exampleInputEmail1" for="user_name">Your Name</label>
@@ -151,15 +95,15 @@
 																																<button type="submit" class="form-control-submit-button">SIGN UP</button>
 																												</div>
 
-																												<div class="form-message">
+																												<!-- <div class="form-message">
 																																<div id="lmsgSubmit" class="h3 text-center hidden"></div>
-																												</div>
+																												</div> -->
 																												
-																												<div class="form-group">
+																												<!-- <div class="form-group d-none">
 																														<div>Already have an account?
 																															<a href="{{ url_for('foreqast_login') }}"class="btn-link" style="color: #4c3ee0;">Log in</a>
 																														</div>
-																												</div> 
+																												</div>  -->
 																								</form>
 																				</div> <!-- end of form container -->
 																</div><!-- end of col -->
