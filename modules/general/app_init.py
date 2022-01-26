@@ -21,6 +21,13 @@ from random import choice
 
 from string import ascii_uppercase, digits, ascii_lowercase
 
+# import for reading files
+import codecs
+
+# import related to sendgrid emailing
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 # for .env variable
 import os
 from dotenv import load_dotenv
@@ -30,6 +37,7 @@ DATABASE_USERNAME = "admin"
 DATABASE_PASSWORD = "%Monday123%"
 DATABASE_HOSTNAME = "database-1.c8uq1bsrptts.ap-south-1.rds.amazonaws.com"
 DATABASE_NAME = "akra_scraper"
+SENDGRID_API_KEY = "SG.H_RkCjXYS7GwoGjECGKZHA.96jZp_OKL_Gwet-a-tjZS3FVSoHFSfDXjZomh3qCKPo"
 
 def init_engine(app):
 	app._engine = create_engine('mysql://' + DATABASE_USERNAME + ':' + DATABASE_PASSWORD + '@' + DATABASE_HOSTNAME + '/' + DATABASE_NAME, echo = False, pool_size = 50, max_overflow = 16, pool_recycle = 300)

@@ -186,6 +186,7 @@ def foreqast_price():
 		print(str(e))
 		return 'OOPS !!!, failed to load the product - price page ...'
 
+# handle user logout action
 @app.route('/foreqast_user_logout')
 def foreqast_user_logout():
 	try:
@@ -198,3 +199,37 @@ def foreqast_user_logout():
 		print(str(e))
 		flash("Falied to logout, please contact administrator ...", "error")
 		return redirect(url_for('foreqast_login'))
+
+# handle send news letter
+@app.route('/foreqast_send_new_letter_email', methods = ["POST"])
+def foreqast_send_new_letter_email():
+	response = {"status" : False, "message" : ""}
+	try:
+		# get the request data
+		data = request.get_json()[0]
+		to_email = data['send_news_letter_email']
+
+		# read the html file and convert into the string
+		html_file = codecs.open("templates/landing/news_letter_email_v1.html", 'r', 'utf-8')
+		str_html_file = html_file.read()
+
+		# send this html file to the respective email
+		message = Mail(
+			from_email = 'rajahmad@akratech.in',
+			to_emails = str(to_email),
+			subject = 'ForeQast News Letter - Leverage the power of quantum computing and AI',
+			html_content = str_html_file
+		)
+
+		# send email vai client
+		sg = SendGridAPIClient(SENDGRID_API_KEY)
+		email_response = sg.send(message)
+		
+		# return the response
+		response["status"] = True
+		response["message"] = "Successfully sent news letter to your email ..."
+		return jsonify(response)
+	except Exception as e:
+		print(str(e))
+		response["message"] = "Error while sending news letter, please try again later ..."
+		return jsonify(response)

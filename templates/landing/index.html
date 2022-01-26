@@ -374,8 +374,8 @@
 												<!-- Newsletter Form -->
 												<form id="newsletterForm" data-toggle="validator" data-focus="false">
 														<div class="form-group">
-																<input type="email" class="form-control-input" id="nemail" required>
-																<label class="label-control" for="nemail">Email</label>
+																<input type="email" class="form-control-input" name="send_news_letter_email" id="send_news_letter_email" required>
+																<label class="label-control" for="send_news_letter_email">Email</label>
 																<div class="help-block with-errors"></div>
 														</div>
 														<div class="form-group checkbox">
@@ -383,10 +383,7 @@
 																<div class="help-block with-errors"></div>
 														</div>
 														<div class="form-group">
-																<button type="submit" class="form-control-submit-button">SUBSCRIBE</button>
-														</div>
-														<div class="form-message">
-																<div id="nmsgSubmit" class="h3 text-center hidden"></div>
+																<button type="button" class="form-control-submit-button" id="send_news_letter_submit" name="send_news_letter_submit">SUBSCRIBE</button>
 														</div>
 												</form>
 												<!-- end of newsletter form -->
@@ -527,7 +524,7 @@
 			var avg_load_data_obj = JSON.parse('{{ bar_graph_data | tojson }}');
 
 			// call avg load chart generator function
-			avg_load_chart_draw(avg_load_data_obj);
+			avg_load_chart_draw(avg_load_data_obj);	
 
 			// function for load avg load chart
 			function avg_load_chart_draw(obj){
@@ -535,7 +532,14 @@
 					$('#avg_load_chart').remove(); // this is <canvas> element
 					$('#graph-container').append('<canvas id="avg_load_chart"><canvas>');
 
+					// get the canvas element
 					var canvas = document.getElementById("avg_load_chart");
+
+					// if canvas is not availabe the return with do nothing
+					if(canvas == undefined){
+						return 0;
+					}
+
 					var ctx = canvas.getContext('2d');
 
 					let chart_type = $('#load_data_chart_type').find(":selected").val();
@@ -658,6 +662,24 @@
 							}
 					});
 			});
+
+			// send news letter email
+			$("#send_news_letter_submit").click(function(e) {
+				let send_news_letter_email = $("#send_news_letter_email").val();
+				// call to the ajax
+				let request_obj = [{'send_news_letter_email' : send_news_letter_email}];
+				$.ajax({
+							type: "POST",
+							url: "foreqast_send_new_letter_email",
+							data: JSON.stringify(request_obj),
+							contentType: "application/json; charset=utf-8",
+							dataType: "json",
+							success: function(response) {
+							 alert(response['message']);
+							}
+					});
+			});
+
 		});
 	</script>
 
