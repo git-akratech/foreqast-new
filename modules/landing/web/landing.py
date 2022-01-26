@@ -51,8 +51,11 @@ def foreqast_login():
 @app.route('/landing_login')
 def landing_login():
 	if 'logged_in' in session and session['logged_in'] == True:
-		user_list = foreqast_get_user_list_info()['data']
-		return render_template('admin/users.html', user_list = user_list)
+		if 'email_id' in session and session['email_id'] == "aida@foreqast.ai":
+			user_list = foreqast_get_user_list_info()['data']
+			return render_template('admin/users.html', user_list = user_list)
+		else:
+			return  redirect(url_for('landing'))
 	else:
 		flash("Your session had been expired, please login again ...", 'error')
 		return redirect(url_for('foreqast_login'))

@@ -34,7 +34,11 @@
 									</li>
 							</ul>
 							<span class="nav-item">
+								{% if 'logged_in' in session and session['logged_in'] %}
+									<a class="btn-outline-sm" href="{{ url_for('foreqast_user_logout') }}">LOG OUT</a>
+								{% else %}
 									<a class="btn-outline-sm" href="{{ url_for('foreqast_login') }}">LOG IN</a>
+								{% endif %}
 							</span>
 					</div>
 			</div> <!-- end of container -->
