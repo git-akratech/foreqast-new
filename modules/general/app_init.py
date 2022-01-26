@@ -33,11 +33,12 @@ import os
 from dotenv import load_dotenv
 
 # ENV variables here
-DATABASE_USERNAME = "admin"
-DATABASE_PASSWORD = "%Monday123%"
-DATABASE_HOSTNAME = "database-1.c8uq1bsrptts.ap-south-1.rds.amazonaws.com"
-DATABASE_NAME = "akra_scraper"
-SENDGRID_API_KEY = "SG.H_RkCjXYS7GwoGjECGKZHA.96jZp_OKL_Gwet-a-tjZS3FVSoHFSfDXjZomh3qCKPo"
+load_dotenv()
+DATABASE_USERNAME = os.environ.get("DATABASE_USERNAME")
+DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
+DATABASE_HOSTNAME = os.environ.get("DATABASE_HOSTNAME")
+DATABASE_NAME = os.environ.get("DATABASE_NAME")
+SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
 
 def init_engine(app):
 	app._engine = create_engine('mysql://' + DATABASE_USERNAME + ':' + DATABASE_PASSWORD + '@' + DATABASE_HOSTNAME + '/' + DATABASE_NAME, echo = False, pool_size = 50, max_overflow = 16, pool_recycle = 300)
