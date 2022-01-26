@@ -66,6 +66,9 @@
 						</div> <!-- end of row -->
 				</div> 
 		</div>
+
+		{% if 'logged_in' in session and session['logged_in'] %}
+		<!-- after user login show -->
 		<div id="features">
 				<div class="container">
 						<h2 class="h2-heading">Price, Load and Renewable Analytics Delivered Twice Daily</h2>
@@ -121,6 +124,39 @@
 						</div> <!-- end of row -->
 				</div> <!-- end of container -->
 		</div> <!-- end of tabs -->
+		{% else %}
+		<!-- before suer login show -->
+		<div id="features" class="tabs">
+				<div id="features">
+						<div class="container">
+												<h2 class="h2-heading">Price, Load and Renewable Analytics Delivered Twice Daily</h2>
+								<div class="row">
+										<div class="col-lg-12 mt-4" >
+												<div class="tab-content" id="argoTabsContent">
+														<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab-1">
+																<div class="row">
+																		<div class="col-lg-6">
+																				<div class="image-container mt-4">
+																						<img class="img-fluid" src="static/landing/images/features-1.png" alt="alternative">
+																				</div> <!-- end of image-container -->
+																		</div> <!-- end of col -->
+																		<div class="col-lg-6">
+																				<div class="text-container">
+																						<h2>Cutting Edge Deep - Learning Technology</h2>
+																						<p >After 25 years of producing trusted machine-learning forecasts, we’ve got this down to an art. Now, we’re improving MAPEs with more granular data and stronger computer power with our deep-learning technology.</p>
+
+																						<a class="btn-solid-reg page-scroll" href="{{ url_for('foreqast_sign_up') }}">SIGN UP</a>
+																				</div> <!-- end of text-container -->
+																		</div> <!-- end of col -->
+																</div> <!-- end of row -->
+														</div> <!-- end of tab-pane -->
+												</div> <!-- end of tab content -->
+										</div><!-- end of tabs content -->
+								</div>
+						</div>
+				</div>
+			</div>
+		{% endif %}
 		
 		<div id="details" class="basic-1">
 				<div class="above-heading">PRODUCTS</div>
@@ -343,7 +379,7 @@
 																<div class="help-block with-errors"></div>
 														</div>
 														<div class="form-group checkbox">
-																<input type="checkbox" id="nterms" value="Agreed-to-Terms" required>I've read and agree to Tivo's written <a href="{{ url_for('foreqast_privacy_policy') }}">Privacy Policy</a> and <a href="{{ url_for('foreqast_terms_and_conditions') }}">Terms Conditions</a> 
+																<input type="checkbox" id="nterms" value="Agreed-to-Terms" required>I've read and agree to ForeQast's written <a href="{{ url_for('foreqast_privacy_policy') }}">Privacy Policy</a> and <a href="{{ url_for('foreqast_terms_and_conditions') }}">Terms Conditions</a> 
 																<div class="help-block with-errors"></div>
 														</div>
 														<div class="form-group">
@@ -478,6 +514,14 @@
 	 <!-- chart js graphs js here -->
 	 <script type="text/javascript">
 		$(document).ready(function(e) {
+
+			// land the page on specifc section
+			let anchor = "{{ anchor }}";
+			if(anchor == "features"){
+				let url = location.href;
+				location.href = "#"+anchor;
+				history.replaceState(null,null,url);
+			}
 
 			// get the initial request avg load data from jinja2 to js
 			var avg_load_data_obj = JSON.parse('{{ bar_graph_data | tojson }}');

@@ -3,6 +3,8 @@
 @app.route('/', methods = ['GET'])
 def landing():
 	try:
+		# get the query parameter if got then land the page on specifc div else leave it
+		anchor = request.args.get('anchor')
 		# get initial load data from loading the graph
 		data = {
 			"from_date" : "2021-12-22",
@@ -10,7 +12,7 @@ def landing():
 			"ba_name" : "PJM"
 		}
 		data_response = get_load_data_by_avg_with_date_range(data)
-		return render_template('/landing/index.html', bar_graph_data = data_response)
+		return render_template('/landing/index.html', bar_graph_data = data_response, anchor = anchor)
 	except Exception as e:
 		print(str(e))
 		return 'OOPS !!!, failed to load the landing page ...'
@@ -55,7 +57,7 @@ def landing_login():
 			user_list = foreqast_get_user_list_info()['data']
 			return render_template('admin/users.html', user_list = user_list)
 		else:
-			return  redirect(url_for('landing'))
+			return  redirect(url_for('landing', anchor = "features"))
 	else:
 		flash("Your session had been expired, please login again ...", 'error')
 		return redirect(url_for('foreqast_login'))
