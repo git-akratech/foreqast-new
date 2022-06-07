@@ -13,7 +13,7 @@
 # Deactivate virtual envirnoment
 	>> deactivate
 
-# Clone codebase - githun repository
+# Clone codebase - github repository
 	>> git clone https://github.com/git-akratech/foreqast-new.git 
 
 # Install requirements.txt via activating virtual envirnoment
